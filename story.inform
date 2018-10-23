@@ -1,0 +1,405 @@
+
+The story title is "Beyond the end of Hope". 
+The story author is "Miguel de Luis Espinosa". 
+The story headline is "An Interactive Adventure in the Post-Apocalypse". 
+The story genre is "Science Fiction". 
+The release number is 1. 
+The story description is "..." 
+The story creation year is 2018.
+
+Part 1 - Setup game
+
+To say NewP: 
+	say "[line break]  ".
+
+Section 1 - Includes
+
+Include Basic Help Menu by Emily Short.
+Include Basic Screen Effects by Emily Short.
+
+Use scoring.
+The maximum score is 10.
+
+Section 2 - Debugging - Not for release
+
+Section 3 - Waiting 
+
+Instead of waiting:
+	let x be a random number between 6 and 18;
+	say "You wait for a while";
+	increase turn count by x;
+	let z be a random number between 1 and 4;
+	if z is 4
+	begin;
+		let dice20 be the remainder after dividing turn count by 12;
+		increment dice20;
+		now Weather is  the Rank corresponding to a D20 of dice20 in the Table of Weather Creation;
+	end if;
+
+	
+Section 4 - Things Kinds
+
+A LargeThing is a kind of thing
+
+A SmallContainer is a kind of container. The carrying capacity of a SmallContainer is usually 6.
+
+Instead of inserting a LargeThing (called LT) into a SmallContainer, say "The [LT] is too large to fit inside."
+
+
+Section 5 - Garments 
+
+[We aren't using those]
+
+
+Section 6 - Rooms Kinds
+
+A shelter is a kind of room.
+
+A wetPlace is a kind of room.
+
+A sea is a kind of wetPlace. The printed name of a sea is usually "At Sea.".
+
+A beach is a kind of wetPlace. 
+
+A land is a kind of room.
+
+
+
+The description of a sea is "poop".
+
+
+Section 7 - Day & Night
+
+Day is a number variable. Day is initially 1.
+partOfDay is a text variable. partOfDay is initially "Morning".
+
+[Day begins at 5:00 AM. Each day is 24*60 turns = 1440]
+
+Every turn:
+	let x be turn count / 1440;
+	let y be remainder after dividing turn count by 1400;
+	now Day is 1 + x;
+	if y < 360
+	begin;
+	 now partOfDay is "Morning";
+	else;
+		if y < 720
+		begin;
+			now partOfDay is "Evening";
+		else;
+			if y < 1280
+			begin;
+				now partOfDay is "Night";
+			else;
+				now partOfDay is "Dawn";
+			end if;
+		end if;
+	end if.
+	
+
+
+Before examining something:
+	If partOfDay is "Night":
+		say "Sorry, night";
+		stop;
+
+Before looking:
+	If partOfDay is "Night":
+		say "[bold type][the player's surroundings][paragraph break]";
+		stop;
+		
+Section 8 - Weather
+
+Weather is a number variable.
+
+Weather is initially 1.
+
+Table of Weather Creation
+D20		Rank
+1		1
+2		1
+3		2
+4		2
+5		2	
+6		3
+7		3
+8		3
+9		4
+10		4
+11		3
+12		5
+13		1
+14		1
+15		2
+16		3
+17		3
+18		4
+19		3
+20		2
+
+Table of Hindrance
+Rank			Hindrance
+1			1
+2			1
+3			2
+4			4
+5		 	7
+
+Every turn:
+	let dice1 be a random number between 1 and 100;
+	if dice1 is 50
+	begin;
+		let dice20 be the remainder after dividing turn count by 12;
+		say dice20;
+		increment dice20;
+		now Weather is  the Rank corresponding to a D20 of dice20 in the Table of Weather Creation;
+	end if;
+	
+
+
+To say weather:
+	if weather is 1, say "Clear";
+	if weather is 2, say "Overcast";
+	if weather is 3, say "Rainning";
+	if weather is 4, say "Storm";
+	if weather is 5, say "Gale!";
+
+		
+[ ============    ============    ============    ============    ============    ============ 
+  ============    ============    THE PLAYER     ============    ============    ============ 
+  ============    ============    ============    ============    ============    ============ ]
+
+Part 2 - The Player
+
+LastSlept is a number variable. LastSlept is initially 1.
+
+Section 1 - The player on itself
+
+The description of the player is "You look alright".
+
+The player wears the PFD.  The player is wearing woolen throusers, a shirt, a cagoule and a pair of wellies.
+
+Before going to a room:
+	if the player is in a shelter (called sh):
+		try exiting;
+		try taking sh;
+		
+Before going to a sea:
+	if the player is not in a kayak
+	begin;
+		say "The water is too deep, too cold, too rough, too huge to swim there";
+		stop;
+	end if;
+	
+
+	
+Instead of sleeping:
+	if the player is in a shelter
+	begin;
+		do nothing;
+	else;
+		if the player is in a land
+		begin;
+			if the tarp is visible
+			begin;
+			 	say "You set up the tarp for sleeping[NewP]";
+			else;
+				say "You shouldn't sleep in the open air. If the rain pours on you, you would be in trouble. Seek shelter.[NewP]";
+				stop;
+			end if;
+		else;
+			say "You should only sleep over the tide line";
+			stop;
+		end if;
+	end if;
+	if LastSlept < turn count - 360
+	begin;
+		let sleptHours be a random number between 5 and 9;
+		let sleptModifier be a random number between 50 and 70;
+		increase turn count by sleptHours * sleptModifier;
+		now LastSlept is turn count;
+		say "You have slept for a good while.";
+	[----]
+		let dice20 be the remainder after dividing turn count by 12;
+		increment dice20;
+		now Weather is  the Rank corresponding to a D20 of dice20 in the Table of Weather Creation;
+	else;
+		say "You aren't feeling too sleepy now";
+	end if;
+
+
+Section 2 - Player Stuff
+
+
+
+A kayak is a kind of vehicle. 
+
+KYK is a kayak. . 
+
+A container called the main hatch is a part of KYK.  The main hatch is closed. The tarp  is in the main hatch. The main hatch is openable.
+
+The day hatch is a part of KYK. The day hatch is a SmallContainer.  The day hatch is openable.
+
+ Understand "kayak" as KYK. Understand "canoe" as KYK. The printed name of KYK is "your kayak".
+
+The description of KYK is "A long blue expedition kayak, that you named '. It has a large hatch at the back, a smaller day hatch close to you, a sturdy skeg and a rock solid plastic body.[NewP]As many kayakers when you say 'hatch' you also mean the storage compartment. The main one is large, but must never be opened in high seas. The day hatch has room just for small items, but it can be opened at sea.".
+
+Before going by kayak  to a room (called x):
+	if x is a land
+	begin;
+		say "You can't paddle a kayak out of the sea.";
+		stop;
+	else;
+		if the player is not holding a paddle
+		begin;
+			say "Kayaks work much better with a paddle"; 
+			stop;
+		else;
+			do nothing;
+		end if;
+	end if;
+	
+After going by kayak from a sea to a sea:
+	let x be a random number between 4 and 6;
+	let y be a random number between 6 and 12;
+	if weather > 3, increase y by 12;
+	let z be x * y;
+	increase the turn count by z;
+	say "You are still at sea";
+	continue the action;
+
+	
+Instead of taking a kayak, say "[printed name] is far too heavy for you to take around.".
+
+After going by kayak to a beach:
+	say "You beached the kayak at [location]";
+	continue the action;
+
+	
+Before exiting:
+	If the player is in KYK:
+		if the player is enclosed by a sea:
+			say "Guille, don't play with me, will you? You should not risk your life this far from land. Besides, that would be too sporty.";
+			stop
+	
+Part 3 - The World
+
+[ ====================]
+
+Chapter 1 - Before Game
+
+When play begins:
+	[Status Line]
+	now the left hand status line is
+		"[the player's surroundings] Turn: [turn count] Score [score] [weather]"; 
+    now the right hand status line is "Day [Day] - [partOfDay]";
+	[Help]
+     choose row 1 in Table of Basic Help Options;
+     now description entry is "When you were little, the world went wrong. Billions died.[paragraph break]  Billions. First it was a pandemic. We weren[']t too worried, yes it was pretty rough in Africa";
+	[Say]
+	say "Hi [bold type]Guille[roman type]. It's me, laddie, [bold type]Fantasmapapá[roman type]. Boy, that[']s a mouthful. Spanish words are long enough and you just had to smash two together. But that's alright. It sounds better than calling me Ghost-dad.[NewP]Even if it fits me well. I am pretty dead. Please don[']t forget that if you don[']t want to get too mad in the head. Anyway, it doesn[']t really matter if I am a real ghost or just a figment of your imagination. I will share this adventure with you. Alright?[NewP]Now, Puffin, if your memory is playing games with you again and you want to remember what you have been through just say [bold type]help[roman type] and I[']ll tell you what happened, gently.[NewP]";
+	center "[bold type] -- Press any key for continue --";
+	wait for any key;
+	clear the screen.
+
+
+Chapter 2 - Map
+
+Section 1 - Mahwrpool
+
+B6M is a beach. "A beach in Mahwrpool". The printed name of B6M is "Mahwrpool".
+
+KYK is in B6M.  A LargeThing called the paddle is in B6M.
+
+
+Section 2 - B Column
+
+B5 and B7 are seas.
+
+B7 is west of B6M. B6M is west of B5. 
+
+
+Section 3 - C Column
+
+C5, C7, C8, C9, C10 and C11 are seas.
+
+C6 is a beach. C6U is a land. "A safe place over the tides". C6U is up of C6.
+
+c10 is west of c9. c9 is west of c8. c8 is west of c7. c7 is west of c6. c6 is west of c5. 
+
+Section 4 - D Column
+
+D1, D3, D4, D5, D6, D7  and D11 are seas.
+
+D8 and D9 are lands.
+
+D2 and D10 are beaches.
+
+D2U is a land. "A safe place over the tides". D2U is up of D2.
+
+The Scientific Station is a shelter . The Scientific Station is inside from D8.
+
+[D10 is not west of D9]. D9 is west of D8. D8 is west of D7. D7 is west of D6. D6 is west of D5. D5 is west of D4. D4 is west of D3. D3 is west of D2. D2 is west of D1. 
+
+Section 5 - E Column
+
+E1, E2, E3, E4, E5 and E6 are seas.
+
+E7 and E8 are beaches.
+
+E9 and E10 are lands.
+
+E10 is west of E9. [E9 is not west of E8] E8 is west of E7. E7 is west of E6. E6 is west of E5. E5 is west of E4. E4 is west of E3. E3 is west of E2. E2 is west of E1.
+
+Section 6 - F Column
+
+F1, F2, F3, F4, F5, F6 and F7 are seas.
+
+F10 is a beach.
+
+F8 and F9 are lands.
+
+F10 is west of F9. F9 is west of F8. F8 is west of F7. F7 is west of F6. F6 is west of F5. F5 is west of F4. F4 is west of F3. F3 is west of F2. F2 is west of F1.
+
+Section 7 - G Column
+
+G1, G5, G6, G7, G8, G9 and G10 are seas.
+
+G2, G3 and G4 are lands.
+
+G10 is west of G9. G9 is west of G8. G8 is west of G7. G7 is west of G6. G6 is west of G5. G5 is west of G4. G4 is west of G3. G3 is west of G2. G2 is west of G1.
+
+Section 8 - H Column 
+
+H5, H7, H8 and H10 are seas.
+
+H1, H4, H6 and H9 are beaches.
+
+H2 and H3 are lands.
+
+H10 is west of H9. H9 is west of H8. H8 is west of H7. H7 is west of H6. H6 is west of H5. H5 is west of H4. [H4 is not west of H3] H3 is west of H2. H2 is west of H1. 
+
+Section 9 - Rows
+
+J1 is north of I1. I1 is north of H1. H1 is north of G1. G1 is north of F1. F1 is north of E1. E1 is north of D1. 
+
+J2 is north of I2. I2 is north of H2. H2 is north of G2. G2 is north of F2. F2 is north of E2. E2 is north of D2. 
+
+M3 is north of  L3. L3 is north of K3. K3 is north of J3. J3 is north of I3. I3 is north of H3. H3 is north of G3. G3 is north of F3. F3 is north of E3. E3 is north of D3. 
+
+M4 is north of  L4. L4 is north of K4. K4 is north of J4. J4 is north of I4. I4 is north of H4. H4 is north of G4. G4 is north of F4. F4 is north of E4. E4 is north of D4.
+
+M5 is north of  L5. L5 is north of K5. K5 is north of J5. J5 is north of I5. I5 is north of H5. H5 is north of G5. G5 is north of F5. F5 is north of E5. E5 is north of D5. D5 is north of C5. C5 is north of B5. 
+
+M6 is north of  L6. L6 is north of K6. K6 is north of J6. J6 is north of I6. I6 is north of H6. H6 is north of G6. G6 is north of F6. F6 is north of E6. E6 is north of D6. D6 is north of C6. C6 is north of B6M. 
+
+M7 is north of  L7. L7 is north of K7. K7 is north of J7. J7 is north of I7. I7 is north of H7. H7 is north of G7. G7 is north of F7. F7 is north of E7. E7 is north of D7. D7 is north of C7. C7 is north of B7. 
+
+M8 is north of  L8. L8 is north of K8. K8 is north of J8. J8 is north of I8. I8 is north of H8. H8 is north of G8. G8 is north of F8. F8 is north of E8. E8 is north of D8. D8 is north of C8. 
+
+M9 is north of  L9. L9 is north of K9. K9 is north of J9. J9 is north of I9. I9 is north of H9. H9 is north of G9. G9 is north of F9. F9 is north of E9. E9 is north of D9. D9 is north of C9. 
+
+M10 is north of  L10. L10 is north of K10. K10 is north of J10. J10 is north of I10. I10 is north of H10. H10 is north of G10. G10 is north of F10. F10 is north of E10. E10 is north of D10. D10 is north of C10. 
+
+
+
