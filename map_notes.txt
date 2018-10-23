@@ -1,0 +1,16 @@
+Symbols		
+
+l	Lighthouse	(or scientific station)  a shelter [a kind of room]
+h	House	- in theory a shelter but orks!!!
+r	Ruins	- decoration or shelter
+b	ben (mountain)	- decoration probably
+:-)	good people	- win the game
+f	trees	- decoration probably
+w	wooded area	- decoration/description
+o	oats	- decoration/description
+m	marshy	- decoration/description
+*	start	
+		
+blue is sea, yellow beaches, green lands, purple skerries (very small islands, mostly behave like beaches but may have a room located UP of them.
+
+houses and lighthouses should be placed inside from a land if possible.
