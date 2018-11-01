@@ -33,71 +33,98 @@ To say NoLand:
 	else;
 		choose a random row in the Table of AllSea;
 	end if;
-	say "[words entry][paragraph break]";
+	say "[words entry]";
 	
 Table of Vision
 words
 "The rain and the waves hampers your vision, and you cannot see but sea here. Still, you must endure."
 "The [weather] does not let you see much."
+"Is that land? No, it's a wall of fog."
+"You paddle bravely inside the [weather] but can[']t see much besides that."
+"Land ho! No, it is but a shadow..."
+"You can hardly see the bow of your kayak. It is that bad, lad."
 
 Table of AllSea
 words
 "No land on sight, don[']t lose hope"
-"Nothing but sea around, you are starting to worry; though you hope for land somewhere to the east or north, or maybe west... really? it must be."
-"No land in sight. You may try to explore a wee bit more, or return to the last place you spotted land."
+"Nothing but sea around, you are starting to worry; though you hope for land somewhere to the east or north, or maybe west... really? it must be"
+"No land in sight. You may try to explore a wee bit more, or return to the last place you spotted land"
 "It[']s all sea east and west, some shadows look like land to the south. But it all could be your imagination"
-"The sea expands everywhere you can see... There is little to do but to hope and to paddle."
+"The sea expands everywhere you can see... There is little to do but to hope and to paddle"
 "The waves and the sky are the only companions to your kayak."
-"Are you lost? Perhaps, the only sure thing is that your eyes meet but the vast ocean."
+"Are you lost? Perhaps, the only sure thing is that your eyes meet but the vast ocean"
 "Again, the sea seems eternal... and scary"
-"The unnerving sea extends in all four directions."
-"Nothing but water and foam in sight."
-"Sea, everywhere, but surely land must be on sight soon."
+"The unnerving sea extends in all four directions"
+"Nothing but water and foam in sight"
+"Sea, everywhere, but surely land must be on sight soon"
 	
 To say Tab:
 	say "    ".
 	
 Understand "status" as a mistake("Day [Day] - [PartOfDay] - [Weather] [line break][Tab][if player is hungry]Hungry[otherwise]Satiated[end if] [line break][Tab][if turn count > Nextsleepy]Sleepy[otherwise]Fresh[end if]").
+
+NSEW is a text variable.
 	
 
 To say LandNorth:
-	if weather > 2
+	let x be a random number between 2 and 6;
+	if weather > x		
 	begin;
-	say "The rain and the waves hampers your vision, and you cannot see but sea here. Still, you must endure.";
+		choose a random row in the Table of Vision;
 	else;
-	say "Land to the north, everything else is open sea.";
+		choose a random row in the Table of WheresLand;
+		now NSEW is "north";
 	end if;
+	say "[words entry]";
 	
 To say LandSouth:
-	if weather > 2
+	let x be a random number between 2 and 6;
+	if weather > x		
 	begin;
-	say "The rain and the waves hampers your vision, and you cannot see but sea here. Still, you must endure.";
+		choose a random row in the Table of Vision;
 	else;
-	say "Land to the south, everything else is open sea.";
+		choose a random row in the Table of WheresLand;
+		now NSEW is "south";
 	end if;
+	say "[words entry]";
 		
 To say LandEast:
-	if weather > 2
+	let x be a random number between 2 and 6;
+	if weather > x		
 	begin;
-		say "The rain and the waves hampers your vision, and you cannot see but sea here. Still, you must endure.";
+		choose a random row in the Table of Vision;
 	else;
-		say "Land to the east, everything else is open sea.";
+		choose a random row in the Table of WheresLand;
+		now NSEW is "east";
 	end if;
+	say "[words entry]";
+
 		
 To say LandWest:
-	if weather > 2
+	let x be a random number between 2 and 6;
+	if weather > x		
 	begin;
-		say "The rain and the waves hampers your vision, and you cannot see but sea here. Still, you must endure.";
+		choose a random row in the Table of Vision;
 	else;
-		say "Land to the west, everything else is open sea.";
+		choose a random row in the Table of WheresLand;
+		now NSEW is "west";
 	end if;
+	say "[words entry]";
+	
+Table of WheresLand
+words
+"Land to the [NSEW], everything else is open sea"
+"Gulls to the [NSEW] on an otherwise desert sky"
+"The waves seem to criss-cross to the [NSEW]. Funny"
+"The water looks lighter to the [NSEW]"
+"A [one of]branch[or]plastic bottle[or]trash bag[or]box[or]wheel[or]buoy[purely at random] is floating to the [NSEW]"
 	
 To say LandNW:
 	if weather > 2
 	begin;
-		say "The rain and the waves hampers your vision, and you cannot see but sea here. Still, you must endure.";
+		say "The rain and the waves hampers your vision, and you cannot see but sea here. Still, you must endure";
 	else;
-		say "Land to the west and to the north, everything else is open sea.";
+		say "Land to the west and to the north, everything else is open sea";
 	end if;
 
 Section 1 - Includes
@@ -118,6 +145,8 @@ Instead of waiting:
 		increment dice20;
 		now Weather is  the Rank corresponding to a D20 of dice20 in the Table of Weather Creation;
 	end if;
+	
+
 
 Section 3 - Room Kinds
 
@@ -190,48 +219,43 @@ Before looking:
 		
 Section 5 - Weather
 
+Table of Weather Creation
+D20			Rank
+1			1
+2			2
+3			3
+4			4
+5			5
+6			1
+7			2
+8			3
+9			4
+10			1
+11			2
+12			3
+13			1
+14			2
+15			2
+16			3
+17			4
+18			5
+19			2
+20			3
+
 Weather is a number variable.
 
-Weather is initially 1.
-
-Table of Weather Creation
-D20		Rank
-1		1
-2		1
-3		2
-4		2
-5		2	
-6		3
-7		3
-8		3
-9		4
-10		4
-11		3
-12		5
-13		1
-14		1
-15		2
-16		3
-17		3
-18		4
-19		3
-20		2
-
-Table of Hindrance
-Rank			Hindrance
-1			1
-2			1
-3			2
-4			4
-5		 	7
+Weather is initially 2.
 
 Every turn:
-	let dice1 be a random number between 1 and 100;
-	if dice1 is 50
-	begin;
-		let dice20 be the remainder after dividing turn count by 20;
-		increment dice20;
-		now Weather is  the Rank corresponding to a D20 of dice20 in the Table of Weather Creation;
+	let dice10 be a random number between 1 and 10;
+	if dice10 is 1
+	begin;		
+		if weather < 5, increment weather;
+	else;
+		if dice10 is 10
+		begin;
+			if weather > 1, decrement weather;
+		end if;
 	end if;
 
 
@@ -265,10 +289,7 @@ Check going to a sea:
 Section 2 - Food and Hunger
 	
 Food is a kind of thing. Food is usually edible. Food has a number called the satisfaction period. 
-A person can be hungry or replete. The player is replete.
-
-
-	
+A person can be hungry or replete. The player is replete.	
 
 NextHungry is a number that varies. NextHungry is initially 500.
 
@@ -286,7 +307,7 @@ Check eating something which is not food:
 Carry out eating something ( called f):
 	decrement the servings of f;
 	now the player is replete;
-	increase NextHungry by 550;
+	now NextHungry is turn count + 550;
 	if the servings of f > 0
 	begin;
 		stop;
@@ -732,7 +753,7 @@ F1, F2, F3, F4, F5, F6 and F7 are seas.
 
 The description of F1 is "[NoLand]"
 
-The description of F2 is "North, the vertical coast of a huge island."
+The description of F2 is "[LandNorth]"
 
 To say hintF3:
 	if weather < 4
@@ -744,7 +765,7 @@ To say hintF3:
 
 The description of F3 is "To the north you spot a tall, rugged cliff  [hintF3]".
 
-The description of F4 is "To the north the promontory of an island; its coast is too rugged to land, it seems."
+The description of F4 is "[LandNorth]"
 
 The description of F5 is "[NoLand]"
 
@@ -754,7 +775,7 @@ The description of F7 is "A skerrie lies to the south, if you can brave its reef
 
 Fa is a beach.
 
-The printed name of Fa is " ". The description of Fa is "A wide beach of white sand broken by a narrow stream coming from the wooden hill to the east. To the south lies a marsh area separated by thick busches, a probably infested with ticks."
+The printed name of Fa is "Otabae Beach". The description of Fa is "A wide beach of white sand broken by a narrow stream coming from the wooden hill to the east. To the south lies a marsh area separated by thick busches, a probably infested with ticks."
 
 F8 and F9 are lands.
 
@@ -810,7 +831,7 @@ The description of Ha is "Land to the east, to the west a place filled with terr
 
 H1, H4, H6 and H9 are beaches.
 
-The printed name of H1 is "Crescent Beach". The description of H1 is "An open beach, open to the sea to south and north, that leads to grassland and, further to the west, to what looks like cultivated fields!"
+The printed name of H1 is "Crescent Beach". The description of H1 is "An open, flat beach on the eastern most part of this island, but ends to the west, to what looks like cultivated oat fields!"
 
 The printed name of H4 is "Finger Beach". The description of H4 is "A narrow water passage, unsuitable for any boat but a kayak leads to a small landing place, and with some difficulty to a path that allows to climb the cliffs to the south."
 
@@ -960,7 +981,7 @@ L5, L6 and La are lands.
 
 The printed name of L5 is "Ben Loch". The description of L5 is "This area is a fern-covered hill crowned by a lake at its top. The earth becomes wetter to the west and slopes down to the north, but dropping as if cut to the south and north."
 
-The printed name of L6 is "Wet Feet Walk". The description of L6 is "If it not were for your wellies and woolen socks, your feet would be miserable right now. As on each step you sink a good four feet into ground. All while enjoying the company of some unfriendly wee beasties. Not good."
+The printed name of L6 is "Wet Feet Walk". The description of L6 is "If it not were for your wellies and woolen socks, your feet would be miserable right now. As on each step you sink a good four feet into ground. All while enjoying the company of some unfriendly wee beasties. Not good.[NewP]There is a beach to the south, most notable for the boat that lies on its sand. Another beach lies to the north. A hill covered in fern is to the east"
 
 The printed name of La is "Scary Sausage Hill". The description of La is "A narrow hill extending north to south, meandearing like a serpente and covered in some horrible black outwroth. A beach lies to the east, a dangerous cliff to the west. The island extends to the north and south as well, but you cannot make out what could be waiting for you there."
 
