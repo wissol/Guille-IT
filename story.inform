@@ -7,25 +7,108 @@ The release number is 1.
 The story description is "..." 
 The story creation year is 2018.
 
+[
+Designer's notes
+================
+I decided not to bother the player with inventory management. There are just so few precious things in this game, while the player always has ---hopefully or the game would be lost--- a kayak around with ample room to load everything and then some. So in my tests it all became a matter of "put things I'm not going to need right now in kayak", plus remember to close hatches and so on.
+
+]
+
+
+
 Part 1 - Setup game
+
+Understand "ne", "nw", "se", "sw", "northeast", "northwest", "southeast" and "southwest" as a mistake ("This game only uses up, down, north, south, east, and west as directions.")
+
+Understand "verbs" as a mistake ("[line break]north, n, south, s, west, w, east, e, up, down, take, drop, enter, exit, land, examine, x, look, l, shoot, gather, hunt")
 
 To say NewP: 
 	say "[line break]  ".
+	
+To say NoLand:
+	let x be a random number between 2 and 6;
+	if weather > x		
+	begin;
+		choose a random row in the Table of Vision;			
+	else;
+		choose a random row in the Table of AllSea;
+	end if;
+	say "[words entry][paragraph break]";
+	
+Table of Vision
+words
+"The rain and the waves hampers your vision, and you cannot see but sea here. Still, you must endure."
+"The [weather] does not let you see much."
+
+Table of AllSea
+words
+"No land on sight, don[']t lose hope"
+"Nothing but sea around, you are starting to worry; though you hope for land somewhere to the east or north, or maybe west... really? it must be."
+"No land in sight. You may try to explore a wee bit more, or return to the last place you spotted land."
+"It[']s all sea east and west, some shadows look like land to the south. But it all could be your imagination"
+"The sea expands everywhere you can see... There is little to do but to hope and to paddle."
+"The waves and the sky are the only companions to your kayak."
+"Are you lost? Perhaps, the only sure thing is that your eyes meet but the vast ocean."
+"Again, the sea seems eternal... and scary"
+"The unnerving sea extends in all four directions."
+"Nothing but water and foam in sight."
+"Sea, everywhere, but surely land must be on sight soon."
+	
+To say Tab:
+	say "    ".
+	
+Understand "status" as a mistake("Day [Day] - [PartOfDay] - [Weather] [line break][Tab][if player is hungry]Hungry[otherwise]Satiated[end if] [line break][Tab][if turn count > Nextsleepy]Sleepy[otherwise]Fresh[end if]").
+	
+
+To say LandNorth:
+	if weather > 2
+	begin;
+	say "The rain and the waves hampers your vision, and you cannot see but sea here. Still, you must endure.";
+	else;
+	say "Land to the north, everything else is open sea.";
+	end if;
+	
+To say LandSouth:
+	if weather > 2
+	begin;
+	say "The rain and the waves hampers your vision, and you cannot see but sea here. Still, you must endure.";
+	else;
+	say "Land to the south, everything else is open sea.";
+	end if;
+		
+To say LandEast:
+	if weather > 2
+	begin;
+		say "The rain and the waves hampers your vision, and you cannot see but sea here. Still, you must endure.";
+	else;
+		say "Land to the east, everything else is open sea.";
+	end if;
+		
+To say LandWest:
+	if weather > 2
+	begin;
+		say "The rain and the waves hampers your vision, and you cannot see but sea here. Still, you must endure.";
+	else;
+		say "Land to the west, everything else is open sea.";
+	end if;
+	
+To say LandNW:
+	if weather > 2
+	begin;
+		say "The rain and the waves hampers your vision, and you cannot see but sea here. Still, you must endure.";
+	else;
+		say "Land to the west and to the north, everything else is open sea.";
+	end if;
 
 Section 1 - Includes
 
 Include Basic Help Menu by Emily Short.
 Include Basic Screen Effects by Emily Short.
 
-Use scoring.
-The maximum score is 10.
-
-Section 2 - Debugging - Not for release
-
-Section 3 - Waiting 
+Section 2 - Waiting
 
 Instead of waiting:
-	let x be a random number between 6 and 18;
+	let x be a random number between 6 and 180;
 	say "You wait for a while";
 	increase turn count by x;
 	let z be a random number between 1 and 4;
@@ -36,22 +119,7 @@ Instead of waiting:
 		now Weather is  the Rank corresponding to a D20 of dice20 in the Table of Weather Creation;
 	end if;
 
-	
-Section 4 - Things Kinds
-
-A LargeThing is a kind of thing
-
-A SmallContainer is a kind of container. The carrying capacity of a SmallContainer is usually 6.
-
-Instead of inserting a LargeThing (called LT) into a SmallContainer, say "The [LT] is too large to fit inside."
-
-
-Section 5 - Garments 
-
-[We aren't using those]
-
-
-Section 6 - Rooms Kinds
+Section 3 - Room Kinds
 
 A shelter is a kind of room.
 
@@ -60,18 +128,18 @@ A wetPlace is a kind of room.
 A sea is a kind of wetPlace. The printed name of a sea is usually "At Sea.".
 
 A beach is a kind of wetPlace. 
-
 A land is a kind of room.
 
-Instead of going nowhere from a sea:
-	say "Puffin, watch it, you were heading out to high seas."
+A land has a number called huntPotential. The huntPotential of a land is usually 8.
 
-The description of a sea is "poop".
+A beach has a number called gatherPotential. The gatherPotential of a beach is usually 8.
 
+
+		
 Instead of dropping something (called bit) in the sea:
 	if the bit is the paddle
 	begin;
-		say "[bold type]Guillermo,     Thomson,    Vera,  You don['] eveRR leave your paddle! [roman type] Gpjr! [bold type]Bez bawhair ta?";
+		say "[bold type]Guillermo,     Thomson,    Vera,  [roman type]You don[']t ever leave your paddle!";
 		stop;
 	else;
 		say "Before you can react, the waves take the [bit], which diasspears among the waves, never to be seen again";
@@ -80,7 +148,7 @@ Instead of dropping something (called bit) in the sea:
 	end if;
 
 
-Section 7 - Day & Night
+Section 4 - Day & Night
 
 Day is a number variable. Day is initially 1.
 partOfDay is a text variable. partOfDay is initially "Morning".
@@ -89,7 +157,7 @@ partOfDay is a text variable. partOfDay is initially "Morning".
 
 Every turn:
 	let x be turn count / 1440;
-	let y be remainder after dividing turn count by 1400;
+	let y be remainder after dividing turn count by 1440;
 	now Day is 1 + x;
 	if y < 360
 	begin;
@@ -106,8 +174,8 @@ Every turn:
 				now partOfDay is "Dawn";
 			end if;
 		end if;
-	end if.
-	
+	end if;
+
 
 
 Before examining something:
@@ -120,7 +188,7 @@ Before looking:
 		say "[bold type][the player's surroundings][paragraph break]";
 		stop;
 		
-Section 8 - Weather
+Section 5 - Weather
 
 Weather is a number variable.
 
@@ -161,18 +229,16 @@ Every turn:
 	let dice1 be a random number between 1 and 100;
 	if dice1 is 50
 	begin;
-		let dice20 be the remainder after dividing turn count by 12;
-		say dice20;
+		let dice20 be the remainder after dividing turn count by 20;
 		increment dice20;
 		now Weather is  the Rank corresponding to a D20 of dice20 in the Table of Weather Creation;
 	end if;
-	
 
 
 To say weather:
 	if weather is 1, say "Clear";
 	if weather is 2, say "Overcast";
-	if weather is 3, say "Rainning";
+	if weather is 3, say "Rain";
 	if weather is 4, say "Storm";
 	if weather is 5, say "Gale!";
 
@@ -183,26 +249,88 @@ To say weather:
 
 Part 2 - The Player
 
-LastSlept is a number variable. LastSlept is initially 1.
+Nextsleepy is a number variable. Nextsleepy is initially 1200.
 
-Section 1 - The player on itself
+Section 1 - The player himself
 
-The description of the player is "You look alright".
-
-
-Before going to a room:
-	if the player is in a shelter (called sh):
-		try exiting;
-		try taking sh;
+The description of the player is "You are not too pleased with your 13 years old self. Not too much meat around your bones, not that strong and neither you consider yourself too handsome. ".
 		
-Before going to a sea:
+Check going to a sea:
 	if the player is not in a kayak
 	begin;
 		say "The water is too deep, too cold, too rough, too huge to swim there";
 		stop;
-	end if;
+	end if;	
+	
+Section 2 - Food and Hunger
+	
+Food is a kind of thing. Food is usually edible. Food has a number called the satisfaction period. 
+A person can be hungry or replete. The player is replete.
+
+
 	
 
+NextHungry is a number that varies. NextHungry is initially 500.
+
+A rationKind is a kind of food. A rationKind has a number called servings. The servings of a rationKind is usually 1. The description of a rationKind is "Rations: [servings]".  The indefinite article of a rationKind is "some". 
+
+The rations is a rationKind. The servings of the rations is 6. The printed name of rations is "rations".
+
+Understand "food", "ration", "rations" and "foodstuffs" as rations.
+
+Check dropping rations: say "If you need to drop some food just use your stomach" instead.
+
+Check eating something which is not food:
+	say "[The noun] is not what you'd consider really healthy." instead.
+	
+Carry out eating something ( called f):
+	decrement the servings of f;
+	now the player is replete;
+	increase NextHungry by 550;
+	if the servings of f > 0
+	begin;
+		stop;
+	else;
+		now the rations are nowhere;
+		say "You ate your last ration";
+	end if;
+	
+Every turn:
+	if turn count > NextHungry, now the player is hungry.
+
+Every turn when the player is hungry:
+	let y be 12;
+	if turn count > NextSleepy, decrease y by 4;
+	if a random chance of 1 in y succeeds
+	begin;
+		choose a random row in the Table of Madness;
+		say "[madness entry][paragraph break]";
+	end if;
+
+Table of Madness
+madness
+"A skeleton is growling at you. That might be some sort of a dream."
+"Oats, oats, it's oaty but you can only think aboat oats."
+"The world seems to slow down and everything becomes sharper and brighter. You are a hunter, a hunter of foodstuffs."
+"You find yourself staring at [the random visible thing that is not the player] and wondering how it would taste."
+"You see a skull flying in the sky. You guess it must be you are fainting from hunger. You smile and keep on."
+"You are filled with remorse for a bird you hunted one year ago. But at the same time, you remember how yummy it was."
+"Heather is singing in your mind, kindling your soul."
+"You rest your head, just for a second."
+"There is a time for many words, and there is also a time for sleep."
+"Sleep is about to honour you with its presence."
+"Lay down and sleep, little down, lay down, for your strength is waning."
+"You feel your head strangely warm."
+"You find yourself crying for no reason, as you often do."
+"You hear Fantasmapapá singing 500 miles, badly enough to make you laugh."
+"On a first thougth a crow has fallen into your head. On a second thougth you had just hit your head. Do you fancy a little sleep?"
+"You feel dad is going to be so proud when you find the good people... and then you remember he[']s dead. But then he appears as a dad and you feel it[']s alright anyway."
+
+
+
+Section 3 - Sleep
+
+[turn count > Nextsleepy]
 	
 Instead of sleeping:
 	if the player is in a shelter
@@ -213,7 +341,13 @@ Instead of sleeping:
 		begin;
 			if the tarp is visible
 			begin;
-			 	say "You set up the tarp for sleeping[NewP]";
+				if the sleeping bag is visible
+				begin;
+			 		say "You set up the tarp and build a lovely fire near it. Taking off your muddy wellies, you let your toes warm up by the flames, before sliding into your bag and sleep.[NewP]";
+				else;
+					say "You really need a sleeping back here or you a setting yourself for a very sorry night";
+					stop;
+				end if;
 			else;
 				say "You shouldn't sleep in the open air. If the rain pours on you, you would be in trouble. Seek shelter.[NewP]";
 				stop;
@@ -223,62 +357,204 @@ Instead of sleeping:
 			stop;
 		end if;
 	end if;
-	if LastSlept < turn count - 360
+	if turn count > Nextsleepy
 	begin;
 		let sleptHours be a random number between 5 and 9;
 		let sleptModifier be a random number between 50 and 70;
 		increase turn count by sleptHours * sleptModifier;
-		now LastSlept is turn count;
+		increase Nextsleepy by turn count;
 		say "You have slept for a good while.";
-	[----]
 		let dice20 be the remainder after dividing turn count by 12;
 		increment dice20;
 		now Weather is  the Rank corresponding to a D20 of dice20 in the Table of Weather Creation;
 	else;
 		say "You aren't feeling too sleepy now";
 	end if;
+	
 
 
-Section 2 - Player Stuff
+
+Section 4 - Hunting/Gathering
+
+
+
+Understand "hunt" as hunting.
+
+Hunting is an action applying to nothing.
+
+A check hunting rule:
+	if the air rifle is not carried:
+		say "You need a weapon to hunt." instead.
+		
+A check hunting rule:
+	if the actor is not in a land:
+		say "You may only hunt in dry land." instead.
+		
+A check hunting rule:
+	if the huntPotential of location of player < 2:
+		say "You quickly gather that there is little left to hunt here."
+		
+Carry out hunting:
+	let x be a random number between 1 and 10;
+	if x < the huntPotential of the location of player
+	begin;
+		if the player is holding some rations
+		begin;
+			increment the servings of the rations;
+		else;
+			now the player is holding some rations;
+			increment the servings of the rations;
+		end if;
+		choose a random row in the Table of small meats;
+		say "Though it did not bring you pleasure, the [prey entry] you hunted will provide you with some food.[paragraph break]";
+		decrement the huntPotential of the location of player;
+	else;
+		say "Sometimes the hunt produces food, at other times produces patience.";
+	end if;
+	let y be a random number between 5 and 10;
+	let z be a random number between 3 and 6;
+	increase the turn count by y * z;
+	[say "[the huntPotential of the location of player][the location of player]"]
+	
+Table of small meats
+prey
+"hedgehog"
+"vole"
+"mouse"
+"birdie"
+"squirrel"
+
+Understand "gather" as gathering.
+
+Gathering is an action applying to nothing.
+
+A check gathering rule:
+	if the actor is in a kayak:
+		say "It is mightly difficult to gather seafood from your canoe. Land your boat and get moving." instead.
+		
+A check gathering rule:
+	if the actor is not in a beach:
+		say "You may only gather shellfish in a beach." instead.
+		
+Carry out gathering:
+	let x be a random number between 2 and 10;
+	if x < the gatherPotential of the location of player
+	begin;
+		if the player is holding some rations
+		begin;
+			increment the servings of the rations;
+		else;
+			now the player is holding some rations;
+			increment the servings of the rations;
+		end if;
+		choose a random row in the Table of seafood;
+		say "You got a nice gathering of [prey entry]";
+		decrement the gatherPotential of the location of player;
+	else;
+		say "The bits of seafood you get from the beach are not enough to feed you.";
+	end if;
+	let y be a random number between 5 and 10;
+	let z be a random number between 3 and 6;
+	increase the turn count by y * z;
+
+Table of seafood
+prey
+"mussels"
+"crabs"
+"sea lettuce"
+"sweet kelp"
+"limpets"
+"periwinkles"
+"razorshells"
+
+Section 5 - Player Stuff
 
 
 
 A kayak is a kind of vehicle. 
 
-KYK is a kayak. .The KYK is in B6M. The player is in KYK. The player is holding a LargeThing called the paddle.
+KYK is a kayak.  The KYK is in Starting Location. The player is in KYK. 
 
-A container called the main hatch is a part of KYK.  The main hatch is closed. The tarp  is in the main hatch. The main hatch is openable.
 
-The day hatch is a part of KYK. The day hatch is a SmallContainer.  The day hatch is openable.
+The player is holding a paddle, some rations, the tarp, the air rifle and the sleeping bag. 
 
- Understand "kayak" as KYK. Understand "canoe" as KYK. The printed name of KYK is "your kayak".
 
-The description of KYK is "A long blue expedition kayak, that you named '. It has a large hatch at the back, a smaller day hatch close to you, a sturdy skeg and a rock solid plastic body.[NewP]As many kayakers when you say 'hatch' you also mean the storage compartment. The main one is large, but must never be opened in high seas. The day hatch has room just for small items, but it can be opened at sea.".
+Understand "kayak" as KYK. Understand "canoe" as KYK. The printed name of KYK is "your kayak".
 
-Before going by kayak  to a room (called x):
-	if x is a land
-	begin;
-		say "You can't paddle a kayak out of the sea.";
-		stop;
-	else;
+The description of KYK is "A long blue expedition kayak, that you named 'Spirit of Scotland'. It is equipped with a home-made wooden skeg as the original one broke off long ago, a padded seat, and a St Andrews cross painted on the stern.".
+
+The bow, the stern, the skeg, the padded seat and the St Andrews cross are parts of the KYK.
+
+The description of the bow is "The front part of your kayak, very sturdy."
+
+The description of the stern is "The back part of your kayak, where the skeg is."
+
+The description of the skeg is "A fin on the stern (back) of the kayak that you can adjust to help in steering and keepping the boat on track."
+
+The description of the padded seat is "A sturdy but comfy seat for you to paddle on."
+
+The description of the St Andrews cross is "A white diagonal cross on a blue field. You know, like on the flag of Scotland."
+
+Instead of pushing a kayak to: 
+	say "The kayak is too heavy to push around for larger distances.".
+
+Before going by kayak to a land, say "You cannot paddle on ground! Find some nice beach to land." instead.
+
+Before going by kayak to a shelter (called x), say "You can not enter [x] in your kayak!" instead.
+
+Before going to home:	
+		say "Hey, Puffin, I know home is a nice place to be, but don[']t quit just now. Remember your mission, you need good People, Mom needs good people, Andrea and Carlos needs good people. And Heather, you don't see her wither and die slowly. I want you to survive Guille, but above all I want you to live before you die." instead.
+
+Before going by kayak to a room:
 		if the player is not holding a paddle
 		begin;
 			say "Kayaks work much better with a paddle"; 
-			stop;
-		else;
-			do nothing;
+			stop;	
 		end if;
-	end if;
 	
 After going by kayak from a sea to a sea:
 	let x be a random number between 4 and 6;
 	let y be a random number between 6 and 12;
-	if weather > 3, increase y by 12;
+	if weather is 4, increase y by 12;
+	if weather is 5, increase y by 20;
+	if partOfDay is "Night", increase y by 20;
+	if the player is hungry, increase y by 5;
+	if turn count > Nextsleepy, increase y by 5;
 	let z be x * y;
 	increase the turn count by z;
-	say "You are still at sea";
 	continue the action;
 
+After going from a beach to a land:
+	let x be a random number between 3 and 4;
+	let y be a random number between 4 and 6;
+	if weather > 3, increase y by 8;
+	if partOfDay is "Night", increase y by 8;
+	if the player is hungry, increase y by 2;
+	if turn count > Nextsleepy, increase y by 2;
+	let z be x * y;
+	increase the turn count by z;
+	continue the action;
+	
+After going from a land to a land:
+	let x be a random number between 3 and 4;
+	let y be a random number between 4 and 6;
+	if weather > 3, increase y by 6;
+	if partOfDay is "Night", increase y by 8;
+	if the player is hungry, increase y by 1;
+	if turn count > Nextsleepy, increase y by 1;
+	let z be x * y;
+	increase the turn count by z;
+	continue the action;
+	
+After going from a land to a beach:
+	let x be a random number between 3 and 4;
+	let y be a random number between 4 and 6;
+	if weather > 3, increase y by 8;
+	if the player is hungry, increase y by 1;
+	if turn count > Nextsleepy, increase y by 1;
+	let z be x * y;
+	increase the turn count by z;
+	continue the action;
 	
 Instead of taking a kayak, say "[printed name] is far too heavy for you to take around.".
 
@@ -297,166 +573,465 @@ Part 3 - The World
 
 Chapter 1 - Before Game
 
+Table of Basic Help Options (continued)
+title    	 description
+"The Status Line"    	 "It[']s important to check your Status Line as it reminds important information. On the left hand you get the name of the location followed by a - and then the number of the day, the part of such day (i.e. morning/night etcetera) and the weather condintion.[NewP]The right hand side should be able unless your character is suffering from some issue. H would indicates that he's hungry and S that he's tired and needs to sleep."
+"Sleep"	"The actor will have to sleep regularly in some shelter. Failure to do so will hinder the actor in various ways. (One of the most obvious being that Guille will be slower at paddling).[NewP]Note that you will not be able to sleep at sea or even below the tide line."
+
+
 When play begins:
 	[Status Line]
 	now the left hand status line is
-		"[the player's surroundings] Turn: [turn count] Score [score] [weather]"; 
-    now the right hand status line is "Day [Day] - [partOfDay]";
+		"[the player's surroundings] - Day:[Day] [partOfDay] [weather]"; 
+	now the right hand status line is	
+		"[if player is hungry]H[otherwise][end if] [if turn count > Nextsleepy]S[otherwise][end if]"; 
 	[Help]
      choose row 1 in Table of Basic Help Options;
-     now description entry is "When you were little, the world went wrong. Billions died.[paragraph break]  Billions. First it was a pandemic. We weren[']t too worried, yes it was pretty rough in Africa";
+     now description entry is "This game has a few quirks.[line break]
+		a) Huge 'rooms'. Think on mostly large areas of four kinds: land, beach, sea and shelter. Moving around will take some consirable time (anything from 15 minutes to a couple of hours) depending on are traveled, weather and so on.[line break]
+		c) Hunger. Guille would like to eat from time to time. It will not die from hunger, but as in sleep it will make everything slower and harder.[line break]
+		d) Food. Food is abstracted in this game as 'rations'. You start the game with 6 rations that you can eat at any time, hungry or not. However, it would be most efficent to wait until your body actually ask for food. A ration is not exactly one thing, so the game does not allow you to drop the rations, or even take them, instead it will update your ration 'servings' as they are spent of found.[line break]
+		e) Hunt/Gather. Two new verbs: hunt and gather. Hunting requires some sort of weapon and can only be executed in a land, so you can catch some the small isles fauna (birdies, voles...). Gathering is mostly about picking sea food from the shore. Both actions require time.[line break]
+		f) The passage of time. Your character has no watch, so the game will not inform you about the passage of time except as telling the part of the day (morning, evening, night and so on).
+		g) Incidentally, paddling at night will be far more hazardous than doing at broad day light.
+		h) The weather. You will enjoy the Highland rain and worse and, at times, it could be a better idea to wait for a storm to pass than try to force the tides.";
 	[Say]
-	say "Hi [bold type]Guille[roman type]. It's me, laddie, [bold type]Fantasmapapá[roman type]. Boy, that[']s a mouthful. Spanish words are long enough and you just had to smash two together. But that's alright. It sounds better than calling me Ghost-dad.[NewP]Even if it fits me well. I am pretty dead. Please don[']t forget that if you don[']t want to get too mad in the head. Anyway, it doesn[']t really matter if I am a real ghost or just a figment of your imagination. I will share this adventure with you. Alright?[NewP]Now, Puffin, if your memory is playing games with you again and you want to remember what you have been through just say [bold type]help[roman type] and I[']ll tell you what happened, gently.[NewP]";
-	center "[bold type] -- Press any key for continue --";
+	say "Hi [bold type]Guille[roman type]. It's me, laddie, [bold type]Fantasmapapá[roman type]. Boy, that[']s a mouthful. Spanish words are long enough and you just had to smash two together. But that's alright. It sounds better than calling me Ghost-dad.[NewP]Even if it fits me well. I am pretty dead. Please don[']t forget that if you don[']t want to get too mad in the head. Anyway, it doesn[']t really matter if I am a real ghost or just a figment of your imagination. I will share this adventure with you. Alright?[NewP]Now, Puffin, if your memory is playing games with you again and you want to remember what you have been through just say [bold type]tell me my story[roman type] and I[']ll tell you what happened, gently.[NewP]";
+	center "[bold type] -- Press any key to continue --";
 	wait for any key;
 	clear the screen.
 
+understand "tell me my story" as a mistake ("
+[paragraph break]It was so long ago, laddie... I guess you can[']t even remember it too well when we were all happy together. When we were just you, Andrea, Carlos, ma and me. Ma was a former Spanish Infantry Sergeant turned into a Wilderness Guide. I was more of the Scientist type, doing research on fish and fishy things.Edimbrugh was so full of joy then... Do you remember when we did the Great Glen Way, and I piggied back you the last day?[NewP]In Inverness, you told us all 'I saw Nessie. I [']no['] isn[']t real [']cause it isn[']t science, but I saw it, all mushy. Summers at mom[']s place; that was Mogán, Gran Canaria, sea, sand and sun. And smiles.[NewP]We saw the thing happening there. You called them 'las muertes', just like the locals, 'the deaths', and the name caught on. People got sick and died. Most of them. We got back home then, before they closed the borders. But it had spread everywhere. You got sick too, we all did, but we all survived that. We were very lucky, they said. We only had lost everybody else. But we kept on together. Then it was hunger, crops failed to come, people fighting, wars and it was all over the world. One day TV failed, then the Internet. Remember that? Of course you do. And that day, when the orks, the bad people came and killed Fred, the vegan, just for fun, we run for it; to the Highlands. And many bad things happened to you, to mom, to everybody else, to me, to everybody, but you don[']t want to remember that too much and I respect that. I sort of got killed. But you know that.[NewP]Any way, [bold type]fast forward[roman type], Mom guided you to this island Mahwrpool. That[']s where you live, and you got Heather, your sweet little thing, take good care of her. And you could make it alright, safe from the Orks, most of the time. But the island is too small and you are too few to make it in the long run. So you had this idea, get out in your kayak and *[bold type]find good people somewhere to the north,[roman type]*. Sargento Mamá doesn[']t like the idea too much, but I think you are right. Go ahead laddie, live before you die. Just beware not everyone is good. Make sure you the orks don[']t get you.[NewP]
+Oh yes, I could be just a figment of your imagination, but I love you still.").
 
 Chapter 2 - Map
 
+
 Section 1 - Mahwrpool
 
-B6M is a beach. "A beach in Mahwrpool". The printed name of B6M is "Mahwrpool".
+Starting Location is a beach. "A small tidal loch where goose come to nest which ends in a wide sandy beach that keeps it from the sea.[NewP]Home is to the south, where you'll return when you have fulfilled your mission. East and West the beach ends abruptly in cliffs and reefs. An outlaying skerry, Coo Island is to the north; further to the north, undiscovered you will find an island with good people.". The printed name of Starting Location is "Goose Poo beach". 
+
+South of Starting Location  is a land called Home.
 
 
 
+Section 2 - C
 
-Section 2 - B Column
+C5, C7, C8, C9, Ca and C11 are seas.
 
-B5 and B7 are seas.
+The description of C5 is "To east and south lays the high seas. Coo Island is to west, nearby." 
 
-Section 3 - C Column
+C6 is a beach. 
 
-C5, C7, C8, C9, C10 and C11 are seas.
+The printed name of C6 is "Coo Island". The description of C6 is "Carlos, your older brother, imagines this island resembles a cow,  kinda. A skerry that you know quite well, with a diminute beach but enough for a kayak, but you wouldn[']t risk spending a night here. [NewP]Goose Poo beach lies to the south. Further to the west, over the skerrie own cliffs, you see the distant cliffs of Forbidden Island. (Forbidden by your mother, that is for Orks might lurk there). To the north, somewhere, you hope to find good people."
+	
+The description of C7 is "[LandEast]" 
 
-C6 is a beach. C6U is a land. "A safe place over the tides". C6U is up of C6.
+Check going east from C7:
+	say "Try as you might the currents and the rock conspire against you" instead.
+	
+The description of C8 is "High seas to the south, the cliffs of Forbidden Island to the north, to the north and south, open waters".
 
-c10 is west of c9. c9 is west of c8. c8 is west of c7. 
+Ca is west of c9. c9 is west of c8. c8 is west of c7. c7 is west of c6. c6 is west of c5.
 
-Section 4 - D Column
+The description of C9 is "The sea extends into the vast Atlantic to the south, to the north you still meet Forbidden Island[']s cliffs which extends into the west."
+
+The description of Ca is "[LandNorth]"
+
+Section 3 - D Column
 
 D1, D3, D4, D5, D6, D7  and D11 are seas.
 
-D8 and D9 are lands.
+The description of D1 is "A skerry is to the west, sheltering this area from the winds that blow stronger to the east and south. To the north, nothing on sight."
 
-D2 and D10 are beaches.
+Instead of going west from D1: 
+	say "You explore Teacher[']s island, not finding any place to land your kayak from this side.";
+	increase the turn count by 6.
 
-D2U is a land. "A safe place over the tides". D2U is up of D2.
+The description of D3 is "The sea extends into the infinite ocean to the south, to the north the waters are a bit less sporty, but it's only to the east that you can spot a bit of land."
 
-The Scientific Station is a shelter . The Scientific Station is inside from D8.
+The description of D4 is "[NoLand]"
 
-D9 is west of D8. D7 is west of D6. D6 is west of D5. D5 is west of D4. D4 is west of D3. D3 is west of D2. 
+The description of D5 is "[NoLand]"
 
-Section 5 - E Column
+The description of D6 is "Coo Island, a skerrie is to the south, far to the west or maybe north, lies what looks like could be land, or a low lying cloud." 
+
+The description of D7 is "To the South the sea lies open. To the west the cliffs of a large island. To the north you can see a skerrie surrounded by treacherous reefs."
+
+D8 and D9 are lands. 
+
+The description of D8 is "A promontory over the cliffs,  where your hungry eyes are quick to spot the trail of a rabbit. More interestingly, perhaps, is a black stone hut with a small hut that you call a _bothy_. You might, want to go in and take a look". The printed name of D8 is "Promontory".
+
+The BothyExterior is in D8. The printed name of BothyExterior is "Black Bothy". The BothyExterior is a backdrop. Understand "Bothy" and "Black Bothy" as BothyExterior.
+
+The Black Bothy is a shelter. The Black Bothy is inside of D8.  The description of the Black Bothy is "There[']s quite literally nothing but dust and a fireplace. Still the roof is standing, so the structure looks solid.". The printed name of the Black Bothy is "Black Bothy".  
+
+The paper is here. The description of the paper is "[line break]The paper begins with 'Formation of LISA Black Hole Binaries in Merging Dwarf Galaxies: The Imprint of Dark Matter' and follows with a lot of words you have no hope to understand." 
+
+The description of D9 is "Your legs sink in the soft ground, though you still manage to make some way. This bit of land is devoid of shelter or anything really but grass, __whatever___ and heather.[NewP]To the west and south the cliffs impedes your way. To the north you can see what could be the ruins of house, your way ends to the east in a promontory." The printed name of D9 is "A barren land".
+
+D2 and Da are beaches.
+
+Instead of going east from Da, say "This is quite of a dangerous climb. It would be simply easier and safer to take another router."
+
+Instead of going west from D9, say "I would not go down that cliff if I were you, Guille."
+
+The printed name of D2 is "Teacher[']s Cove". The description of D2 is "A small island, little more than a cove and, going up, a hill that, for some reason makes you remember the face of your last teacher.[NewP]To the south the sea is wild, reefs shield this island to the north and east. To the west, as you know, is the strecth of sea whence you came."
+ 
+D2U is a land. The printed name of D2U is "Teacher[']s Hill". The description of D2U is "The hill ends is a small depression at its top. There the rain provides enough water for a large pool that the guillemots have taken as its own." D2U is up of D2.
+
+The printed name of Da is "Wooden Sign Beach". The description of Da is  "A nice wide beach that ends abruptly in a forebading cliff to the east. The sea extends to the west, but those are a confirmed ork area, so you will not venture any further west. To the south, the strech of sea whence you came, to the north a marshy slope like it could only exist in Scotland."
+
+The wooden sign is here. The wooden sign is a backdrop. The description of the wooden sign  is "'James Webb Beach'".
+
+Da is west of D9. D9 is west of D8. D8 is west of D7. D7 is west of D6. D6 is west of D5. D5 is west of D4. D4 is west of D3. D3 is west of D2. D2 is west of D1.
+
+Section 4 - E Column
 
 E1, E2, E3, E4, E5 and E6 are seas.
 
+
+
+
+The description of E1 is "Nothing on sight, to the east the waves grow really rapidly."
+
+The description of E2 is "[NoLand]"
+
+The description of E3 is "[NoLand]"
+
+The description of E4 is "[NoLand]" 
+
+The description of E5 is "[NoLand]"
+
+The description of E6 is "A crowd of gannets soar the skies in circles to the west; any other direction is empty."
+
 E7 and E8 are beaches.
 
-E9 and E10 are lands.
+The description of E7 is "A rocky skerry emerging but inches from the waters.". The printed name of E7 is "Pointy sticks island".
 
-E10 is west of E9. E8 is west of E7. E7 is west of E6. E6 is west of E5. E5 is west of E4. E4 is west of E3. E3 is west of E2. E2 is west of E1.
+The description of E8 is "A corridor of sand, bordered by cliffs serpents its way from east to north." The printed name of E8 is "Gold carpet beach".
 
-Section 6 - F Column
+E9 and Ea are lands.
+
+The printed name of E9 is "Ruined Croft". The description of E9 is "This used to be, not too long ago, a working farm of modest means, probably occupied by other 'muertes' survivors. Now, all that remains is a few charred walls, black but where the moss has begun to grow and a heap of bones. [NewP]There[']s a cliff to the east, a massive wooden hill to the north, everything else is marshland."
+
+The bones is a backdrop. The bones are in E9. The description of the bones is "human bones of mixed sizes, you shiver with the mental picture of their fate at the hands of 'orks'."
+
+The walls is a backdrop. The walls are in E9. 
+
+The printed name of Ea is "Blanket Bog". The description of Ea is "A kind of land not unfamiliar to you: a patchwork of poodles, thin cold streams, moss, ferns and heather.[NewP]A beach and the sea are to south. To the north your way to the sea is blocked by bushes so thick and tick infested it isn't worth a cross. To the east you can see the remains of a modern home." 
+
+Ea is west of E9. E9 is west of E8. E8 is west of E7. E7 is west of E6. E6 is west of E5. E5 is west of E4. E4 is west of E3. E3 is west of E2. E2 is west of E1.
+
+Section 5 - F Column
 
 F1, F2, F3, F4, F5, F6 and F7 are seas.
 
-F10 is a beach.
+
+
+The description of F1 is "[NoLand]"
+
+The description of F2 is "North, the vertical coast of a huge island."
+
+To say hintF3:
+	if weather < 4
+	begin;
+		say "and, beyond it, a faint spear of smoke.";
+	else;
+		say "engulfed by the furious rain";
+	end if.
+
+The description of F3 is "To the north you spot a tall, rugged cliff  [hintF3]".
+
+The description of F4 is "To the north the promontory of an island; its coast is too rugged to land, it seems."
+
+The description of F5 is "[NoLand]"
+
+The description of F6 is "[NoLand]"
+
+The description of F7 is "A skerrie lies to the south, if you can brave its reefs, to the west lies what looks like a more substantial island."
+
+Fa is a beach.
+
+The printed name of Fa is " ". The description of Fa is "A wide beach of white sand broken by a narrow stream coming from the wooden hill to the east. To the south lies a marsh area separated by thick busches, a probably infested with ticks."
 
 F8 and F9 are lands.
 
-F10 is west of F9. F9 is west of F8. F7 is west of F6. F6 is west of F5. F5 is west of F4. F4 is west of F3. F3 is west of F2. F2 is west of F1.
+The printed name of F8 is "Hedgehog plains".The description of F8 is "Even in the dullest of places, as this moor is, there's excitment for those who know how to look. Like a nice hedgehog borrow over there.[NewP]Sea is to the north and east, to the south a beach, to the west a wooded hill.".
 
-Section 7 - G Column
+The printed name of F9 is "Wooded hill". The description of F9 is "Steep to the north, where this mountain falls suddenly into the sea, this birch forest slopes down softly everywhere else."
 
-G1, G5, G6, G7, G8, G9 and G10 are seas.
+Fa is west of F9. F9 is west of F8. F8 is west of F7. F7 is west of F6. F6 is west of F5. F5 is west of F4. F4 is west of F3. F3 is west of F2. F2 is west of F1.
+
+Section 6 - G Column
+
+G1, G5, G6, G7, G8, G9 and Ga are seas.
+
+The description of G1 is "An island to the north and west."
+
+The description of G5 is "[LandEast]"
+
+The description of G6 is "[LandNorth]"
+
+The description of G7 is "[NoLand]"
+
+The description of G8 is "Land to the south."
+
+The description of G9 is "To the south a mountain climbs out of the sea, to the north a smallish land."
+
+The description of Ga is "To the south you spot the white sands of a promising beach. To the west, you won[']t go any further, as the playground of orks lie over there."
 
 G2, G3 and G4 are lands.
 
-G10 is west of G9. G9 is west of G8. G8 is west of G7. G7 is west of G6. G6 is west of G5.  G4 is west of G3. G3 is west of G2. 
+To say orks:
+	say "orks not implemented."
 
-Section 8 - H Column 
+The printed name of G2 is "Stone Circle". The description of G2 is "A soft hill leads to to a circle of six heaps of stones, with a smaller one at the center.[NewP]To the north lies cultivated land, to the west, [orks]."
 
-H5, H7, H8 and H10 are seas.
+
+The printed name of G3 is "The three houses." The description of G3 is "ORKS here. not implemented."
+
+The printed name of G4 is "A barren hill". The description of G4 is "An oddly star shaped hill that falls into the ocean to the south and west. To the east [orks]."
+
+Ga is west of G9. G9 is west of G8. G8 is west of G7. G7 is west of G6. G6 is west of G5. G5 is west of G4.  G4 is west of G3. G3 is west of G2. G2 is west of G1.
+
+Section 7 - H Column 
+
+H5, H7, H8 and Ha are seas.
+
+The description of H5 is "An island to the west, a beach to the east."
+
+The description of H7 is "Land to the east, broken and uneven."
+
+The description of H8 is "To the south something that doesn[']t seem much larger than a skerry emerges from the waves."
+
+The description of Ha is "Land to the east, to the west a place filled with terror."
 
 H1, H4, H6 and H9 are beaches.
 
+The printed name of H1 is "Crescent Beach". The description of H1 is "An open beach, open to the sea to south and north, that leads to grassland and, further to the west, to what looks like cultivated fields!"
+
+The printed name of H4 is "Finger Beach". The description of H4 is "A narrow water passage, unsuitable for any boat but a kayak leads to a small landing place, and with some difficulty to a path that allows to climb the cliffs to the south."
+
+The printed name of H6 is "Cupcake skerry". The description of H6 is "You have no idea of this smallish island used to be called before 'las muertes' but 'Cupcake' seems to fit its shape. It has ample entry points from its southern and western sides for a kayak and, walking up, over the tide line a cave, just wide enough to set up some shelter."
+
+H6U is up of H6. H6U is a shelter. H6U is up of H6. The printed name of H6U is "Cave". The description of H6U is "Not a huge thing, just six meters into the rock, this cave might have been the refuge of some pirate long ago."
+
+The printed name of H9 is "The tween beans". The description of H9 is "An oddly shaped that an eight years old kid might have described as 'two beans with a lake in the middle'. Up from one of such beans there are the ruins of a small hut."
+
+H9U is a land. H9U is up of H9. The printed name of H9U is "Hut in ruins". The description of H9U is "Long, very long ago, somebody built himself some sort of stony shelter. It is all in ruins now, nothing but red bricks and a broken teapot, but it seems safe from sea and wind."
+
 H2 and H3 are lands.
 
-H8 is west of H7.  H6 is west of H5. H3 is west of H2. H2 is west of H1. 
+The printed name of H2 is "Fields of Oats". The description of H2 is "NOT IMPLEMENTED --- DESCRIBE OAT FIELDS --- ADD GOBLIN PERHAPS?"
 
-Section 9 - I Column 
+The printed name of H3 is "Wooded Mountain". The description of H3 is "SOMETHING HORRIBLE LURKS HERE...?"
 
-I1, I4, I5, I6, I7, I8, I9 and I10 are seas.
+Ha is west of H9. H9 is west of H8. H8 is west of H7. H7 is west of H6. H6 is west of H5. H5 is west of H4. H4 is west of H3. H3 is west of H2. H2 is west of H1. 
+
+Section 8 - I Column 
+
+I1, I4, I5, I6, I7, I8, I9 and Ia are seas.
+
+The description of I1 is "Land to the south and west, to the east the sea extends with no end in sight."
+
+The description of I4 is "Land to the south and east."
+
+The description of I5 is "[NoLand]."
+
+To say I6text:
+	if weather > 2
+	begin;
+		say "The rain and the fog does not let you see anything beyond the closest waves.";
+	else;
+		say "There is land to the south, everything else is sea.";
+	end if;
+
+The description of I6 is "[I6text]."
+
+The description of I7 is "[NoLand]."
+
+The description of I8 is "[NoLand]."
+
+To say I9text:
+	if weather > 2
+	begin;
+		say "The rain and the fog does not let you see anything beyond the closest waves.";
+	else;
+		say "To the south and north the waves are interrupted by islands.";
+	end if;
+	
+The description of Ia is "An island lies to the north, defended by tall cliffs, to the west there[']s nothing but the kingdom of the orcs."
+
+
+The description of I9 is "[I9text]."
 
 I2 is a land.
 
+The printed name of I2 is "Northern Promontory". The description of I2 is "This area raises from the sea to become a flat plateu."
+
 I3 is a beach.
 
-I10 is west of I9. I9 is west of I8. I8 is west of I7. I7 is west of I6. I6 is west of I5. I5 is west of I4.  I3 is west of I2. 
+The printed name of I3 is "Speccy Beach". The description of I3 is "A smallish landing place; only fit for a kayak allows you to land and proceed, east, to a flat promontory. To the south, ---standing on an almost vertical wall---, a huge hill crowns itself on the sky."
 
 
-Section 10 - J Column 
+Ia is west of I9. I9 is west of I8. I8 is west of I7. I7 is west of I6. I6 is west of I5. I5 is west of I4.  I4 is west of I3. I3 is west of I2. I2 is west of I1.
+
+
+Section 9 - J Column 
 
 J1, J2, J3, J4, J5, J6, J7 and J8 are seas.
 
+The description of J1 is "[NoLand]."
+
+The description of J2 is "[LandSouth]."
+
+The description of J3 is "[LandSouth]."
+
+The description of J4 is "[NoLand]."
+
+The description of J5 is "[NoLand]."
+
+The description of J6 is "[LandEast]."
+
+The description of J7 is "[NoLand]."
+
+The description of J8 is "[LandWest]."
+
 J9 is a beach. [skerry] 
 
-J10 is a land.
+The printed name of J9 is "Lighthouse Island". The description of J9 is "A round, flatish skerry that you wouldn[']t even spotted if not where by the lighthouse on its center.".
 
-J8 is west of J7. J7 is west of J6. J6 is west of J5. J5 is west of J4. J4 is  west of J3. J3 is west of J2. J2 is west of J1. 
+The Lighthouse is a shelter. The lighthouse is up of J9. The description of the Lighthouse is "A small tower that housed a modern signalling station. Obviously sacked long ago, it is now empty and devoid of facilities. Still, inside is protected from wind and rain and there[']s barely enough space for you lie on."
 
-Section 11 - K Column
+Ja is a land. The printed name of Ja is "Good People". The description of Ja is "NOT IMPLEMENT BUT PLAYER WINS HERE UNLESS STARTS SHOOTING AROUND STUPID OR SOMETHING".
+
+Ja is west of J9. J9 is west of J8. J8 is west of J7.           J7 is west of J6. J6 is west of J5. J5 is west of J4. J4 is  west of J3. J3 is west of J2. J2 is west of J1. 
+
+Section 10 - K Column
 
 K3, K4, K5, K7, K8 and K9 are seas.
 
+The description of K3 is "[NoLand]."
+
+The description of K4 is "[NoLand]."
+
+The description of K5 is "[LandNW]."
+
+The description of K7 is "[LandNorth]."
+
+The description of K8 is "[NoLand]."
+
+The description of K9 is "A gulf by the looks. Shadows hint of land to the west, north and south."
+
 K6 is a beach.
 
-K10 is a land.
+The printed name of K6 is "Red Beach". The description of K6 is "Mixed with red sand there's a derelict boat, now reddened by oxide. A marsh lies to the north."
 
-K9 is west of K8. K8 is west of K7. K7 is west of K6. K5 is west of K4. K4 is  west of K3. 
+The derelict boat is a backdrop. The description of the derelict boat is "A fishing boat, with a cabin and engine in a hopeless state of ruin."
 
-Section 12 - L Column
+
+Ka is a land.
+
+The printed name of Ka is "Skeleton Totem". The description of Ka is "NOT IMPLEMENTED".
+
+Ka is west of K9. K9 is west of K8. K8 is west of K7. K7 is west of K6. K6 is west of K5. K5 is west of K4. K4 is  west of K3. 
+
+Section 11 - L Column
 
 L3, L4, L7 and L8 are seas.
 
+The description of L3 is "[NoLand]."
+
+The description of L4 is "[LandNW]."
+
+The description of L7 is "[LandEast]."
+
+The description of L8 is "[LandWest]."
+
 L9 is a beach.
 
-L5, L6 and L10 are lands.
+The printed name of L9 is "Pole Beach". The description of L9 is "A beach of dulse and seaweeds so you need to walk with care."
 
-L9 is west of L8. L8 is west of L7. L6 is west of L5. L4 is  west of L3.
+The fishtrap is here. The description of the fishtrap is "A wire cage with an opening in the shape of a funnel. You[']ve built a few of these at home. Fish enters but doesn[']t get out. It[']s wet and in pretty good shape." 
 
-Section 13 - M Column
+L5, L6 and La are lands.
+
+The printed name of L5 is "Ben Loch". The description of L5 is "This area is a fern-covered hill crowned by a lake at its top. The earth becomes wetter to the west and slopes down to the north, but dropping as if cut to the south and north."
+
+The printed name of L6 is "Wet Feet Walk". The description of L6 is "If it not were for your wellies and woolen socks, your feet would be miserable right now. As on each step you sink a good four feet into ground. All while enjoying the company of some unfriendly wee beasties. Not good."
+
+The printed name of La is "Scary Sausage Hill". The description of La is "A narrow hill extending north to south, meandearing like a serpente and covered in some horrible black outwroth. A beach lies to the east, a dangerous cliff to the west. The island extends to the north and south as well, but you cannot make out what could be waiting for you there."
+
+
+
+La is west of L9. L9 is west of L8. L8 is west of L7. L7 is west of L6. L6 is west of L5. L5 is west of L4.  L4 is  west of L3.
+
+Section 12 - M Column
 
 M3, M7 and M8 are seas.
 
+The description of M3 is "[LandWest]."
+
+The description of M7 is "[LandEast]."
+
+The description of M8 is "[LandWest]."
+
 M6 is a beach.
 
-M4, M5, M9 and M10 are lands.
+The printed name of M6 is "Ed Copeland Beach". The description of M6 is "A low flat beach, where the waves dynamics stop into an homogenous area of sand. A house lies to the east."
 
-M10 is west of M9.  M8 is west of M7. M7 is west of M6. M6 is west of M5. M5 is west of M4. 
+M5 is a shelter. The printed name of M5 is "Colourful house". The description of M5 is "Silence, somehow it sounds eerie inside this home. The tables, the cupboard, the beds they are all missing. But the doors work perfectly and, apart from a bit of dust and most it looks magnificent clean. Was this place meant for turists before 'las muertes'.[NewP] A flat strap of land goes to the east, before descending into the sea. To the south lies a rounded hill."
 
-Section 14 - Rows
+M4, M9 and Ma are lands.
+
+The printed name of M4 is "Fences". The description of M4 is "A high area, well drained, rounded with a fence that used to be white. The land seems to have been worked long ago, but now it's all grass and heather.[NewP]The house is to the west, beyond the fence, north, east and south lies a fourious sea below a murdering fall."
+
+The printed name of M9 is "Lamb[']s Silence". The description of M9 is "A patch of land that would have nothing out of the extraordinary if not were by an orderly array of bones on the ground. Here the skulls, all in a line, there the tibias in a double line, between them the rank and file of the ribs. Counting each skull, 24 lambs were left to rest here."
+
+The printed name of Ma is "Sargent Ma[']s Wood". The description of Ma is "A wood so thick you could believe you are in some tropical forest. Though it is all very odd, unnatural in this region, almost unreal."
+
+Ma is west of M9. M9 is west of M8. M8 is west of M7. M7 is west of M6. M6 is west of M5. M5 is west of M4.
+M4 is west of M3. 
+
+Section 13 - Rows
 
 J1 is north of I1. I1 is north of H1. H1 is north of G1. G1 is north of F1. F1 is north of E1. E1 is north of D1. 
 
-I2 is north of H2. H2 is north of G2.  F2 is north of E2. 
+J2 is north of I2. I2 is north of H2. H2 is north of G2.  G2 is north of F2. F2 is north of E2. E2 is north of D2.
 
-M3 is north of  L3. L3 is north of K3. K3 is north of J3. J3 is north of I3. H3 is north of G3. F3 is north of E3. E3 is north of D3. 
+M3 is north of L3. L3 is north of K3. K3 is north of J3. J3 is north of I3. I3 is north of H3. H3 is north of G3. G3 is north of F3. F3 is north of E3. E3 is north of D3. 
 
-L4 is north of K4. K4 is north of J4. J4 is north of I4. I4 is north of H4. H4 is north of G4. F4 is north of E4. E4 is north of D4.
+M4 is north of L4. L4 is north of K4. K4 is north of J4. J4 is north of I4. I4 is north of H4. H4 is north of G4. G4 is north of F4. F4 is north of E4. E4 is north of D4.
 
-M5 is north of  L5. K5 is north of J5. J5 is north of I5. I5 is north of H5. H5 is north of G5. G5 is north of F5. F5 is north of E5. E5 is north of D5. D5 is north of C5. C5 is north of B5. 
+M5 is north of L5. L5 is north of K5. K5 is north of J5. J5 is north of I5. I5 is north of H5. H5 is north of G5. G5 is north of F5. F5 is north of E5. E5 is north of D5. D5 is north of C5. 
 
-L6 is north of K6. J6 is north of I6. H6 is north of G6. G6 is north of F6. F6 is north of E6. E6 is north of D6. D6 is north of C6. C6 is north of B6M. 
+M6 is north of L6. L6 is north of K6. K6 is north of J6.
+J6 is north of I6. I6 is north of H6. H6 is north of G6. G6 is north of F6. F6 is north of E6. E6 is north of D6. D6 is north of C6. C6 is north of Starting Location. 
 
-M7 is north of  L7. L7 is north of K7. K7 is north of J7. J7 is north of I7. I7 is north of H7. H7 is north of G7. G7 is north of F7. D7 is north of C7. C7 is north of B7. 
+M7 is north of L7. L7 is north of K7. K7 is north of J7.
+J7 is north of I7. I7 is north of H7. H7 is north of G7. 
+G7 is north of F7. F7 is north of E7. E7 is north of D7. 
+D7 is north of C7. 
 
-M8 is north of  L8. L8 is north of K8. K8 is north of J8. J8 is north of I8. I8 is north of H8. H8 is north of G8. F8 is north of E8. 
+M8 is north of L8. L8 is north of K8. K8 is north of J8.
+J8 is north of I8. I8 is north of H8. H8 is north of G8. 
+G8 is north of F8. F8 is north of E8. E8 is north of D8. 
+D8 is north of C8. 
 
-M9 is north of  L9. J9 is north of I9. I9 is north of H9. H9 is north of G9. F9 is north of E9. E9 is north of D9. 
+M9 is north of L9. L9 is north of K9. K9 is north of J9.
+J9 is north of I9. I9 is north of H9. H9 is north of G9. 
+G9 is north of F9. F9 is north of E9. E9 is north of D9. 
+D9 is north of C9. 
 
-M10 is north of  L10. L10 is north of K10. K10 is north of J10. I10 is north of H10. H10 is north of G10. G10 is north of F10. E10 is north of D10. D10 is north of C10. 
+Ma is north of La. La is north of Ka. Ka is north of Ja. Ja is north of Ia. Ia is north of Ha. Ha is north of Ga. Ga is north of Fa. [Fa is north of Ea.] Ea is north of Da. Da is north of Ca. 
+
+Section 14 - Regions
+
+BorderSea is a region. C5, C7, C8, C9, CA, D1, D2, D3, D4, E1, F1, G1, GA, HA, I1, IA, J1, J2, K3, L3 and M3 are in BorderSea.
+
+Instead of going nowhere from BorderSea, say "Be careful, that way is the high seas".
 
 
 
