@@ -18,9 +18,10 @@ I decided not to bother the player with inventory management. There are just so 
 
 Part 1 - Setup game
 
-Understand "ne", "nw", "se", "sw", "northeast", "northwest", "southeast" and "southwest" as a mistake ("This game only uses up, down, north, south, east, and west as directions.")
+Understand "ne", "nw", "se", "sw", "northeast", "northwest", "southeast", and "southwest" as a mistake ("This game only uses north, south, east, and west as directions.")
 
 Understand "verbs" as a mistake ("[line break]north, n, south, s, west, w, east, e, up, down, take, drop, enter, exit, land, examine, x, look, l, shoot, gather, hunt")
+
 
 To say NewP: 
 	say "[line break]  ".
@@ -63,8 +64,7 @@ To say Tab:
 	
 Understand "status" as a mistake("Day [Day] - [PartOfDay] - [Weather] [line break][Tab][if player is hungry]Hungry[otherwise]Satiated[end if] [line break][Tab][if turn count > Nextsleepy]Sleepy[otherwise]Fresh[end if]").
 
-NSEW is a text variable.
-	
+NSEW is a text variable.	
 
 To say LandNorth:
 	let x be a random number between 2 and 6;
@@ -98,7 +98,6 @@ To say LandEast:
 		now NSEW is "east";
 	end if;
 	say "[words entry]";
-
 		
 To say LandWest:
 	let x be a random number between 2 and 6;
@@ -131,6 +130,7 @@ Section 1 - Includes
 
 Include Basic Help Menu by Emily Short.
 Include Basic Screen Effects by Emily Short.
+Use no scoring.
 
 Section 2 - Waiting
 
@@ -145,30 +145,20 @@ Instead of waiting:
 		increment dice20;
 		now Weather is  the Rank corresponding to a D20 of dice20 in the Table of Weather Creation;
 	end if;
-	
-
 
 Section 3 - Room Kinds
 
-A shelter is a kind of room.
 
-A wetPlace is a kind of room.
+A shelter is a kind of room.  A sea is a kind of room. The printed name of a sea is usually "At Sea.". A beach is a kind of room. A land is a kind of room.
 
-A sea is a kind of wetPlace. The printed name of a sea is usually "At Sea.".
+A land has a number called huntPotential. The huntPotential of a land is usually 6.
 
-A beach is a kind of wetPlace. 
-A land is a kind of room.
-
-A land has a number called huntPotential. The huntPotential of a land is usually 8.
-
-A beach has a number called gatherPotential. The gatherPotential of a beach is usually 8.
-
-
+A beach has a number called gatherPotential. The gatherPotential of a beach is usually 6.
 		
 Instead of dropping something (called bit) in the sea:
 	if the bit is the paddle
 	begin;
-		say "[bold type]Guillermo,     Thomson,    Vera,  [roman type]You don[']t ever leave your paddle!";
+		say "Guillermo,     Thomson,    Vera,  You don[']t ever leave your paddle!";
 		stop;
 	else;
 		say "Before you can react, the waves take the [bit], which diasspears among the waves, never to be seen again";
@@ -176,13 +166,10 @@ Instead of dropping something (called bit) in the sea:
 		stop;
 	end if;
 
-
 Section 4 - Day & Night
 
 Day is a number variable. Day is initially 1.
 partOfDay is a text variable. partOfDay is initially "Morning".
-
-[Day begins at 5:00 AM. Each day is 24*60 turns = 1440]
 
 Every turn:
 	let x be turn count / 1440;
@@ -204,18 +191,6 @@ Every turn:
 			end if;
 		end if;
 	end if;
-
-
-
-Before examining something:
-	If partOfDay is "Night":
-		say "Sorry, night";
-		stop;
-
-Before looking:
-	If partOfDay is "Night":
-		say "[bold type][the player's surroundings][paragraph break]";
-		stop;
 		
 Section 5 - Weather
 
@@ -347,16 +322,22 @@ madness
 "On a first thougth a crow has fallen into your head. On a second thougth you had just hit your head. Do you fancy a little sleep?"
 "You feel dad is going to be so proud when you find the good people... and then you remember he[']s dead. But then he appears as a dad and you feel it[']s alright anyway."
 
-
+Table of Fears
+fear
+"the next winter is going to be horrible."
+"Sargento Mamá, your mother, who is looking too tired lately, with gray hair and all, she might be sick."
+"you were perhaps adopted, not that it matters too much now the world is over and all that, but still..."
+"Carlos, your brother, he told you he's going to leave some day with Andrea, to have kids of their own. But he's too young still, and that's stupid. Who do they think they are? Adam and Eve?"
+"an old dream you had, you were in your undies, stuck to a spider web and then this giant spider crawls so very slowly towards you."
+"the rain. One day it might start raining and never stop. Then, what?"
+"your mind. Perhaps this whole story is fruit of a madness and you are in some special school... or the whole thing is a dream... or something."
 
 Section 3 - Sleep
 
-[turn count > Nextsleepy]
-	
 Instead of sleeping:
-	if the player is in a shelter
+	if the player is in a shelter (called s)
 	begin;
-		do nothing;
+		say "Well protected from nature[']s sting you set yourself to sleep";
 	else;
 		if the player is in a land
 		begin;
@@ -364,9 +345,10 @@ Instead of sleeping:
 			begin;
 				if the sleeping bag is visible
 				begin;
-			 		say "You set up the tarp and build a lovely fire near it. Taking off your muddy wellies, you let your toes warm up by the flames, before sliding into your bag and sleep.[NewP]";
+			 		choose a random row from the Table of Good Nights;
+					say "[words entry]...[NewP]";
 				else;
-					say "You really need a sleeping back here or you a setting yourself for a very sorry night";
+					say "You really need a sleeping bag here or you a setting yourself for a very sorry night";
 					stop;
 				end if;
 			else;
@@ -389,15 +371,23 @@ Instead of sleeping:
 		increment dice20;
 		now Weather is  the Rank corresponding to a D20 of dice20 in the Table of Weather Creation;
 	else;
-		say "You aren't feeling too sleepy now";
+		let xax be a random number between 5 and 15;
+		increase turn count by xax;
+		choose a random row in the Table of Fears;
+		say "...but you are unable to shut your mind down, thinking about [fear entry]";
 	end if;
 	
-
-
+Table of Good Nights
+words
+"Under the tarp and by the lovely fire, your toes free from the opression of the wellies, you hum a sweet song before sliding into your bag"
+"The tarp fills with the warmth of the flames, as you slip into silence"
+"Safe under the protection of canvas, you imagine Heather smiling on you, and you know you are dreaming nice soon"
+"The 'ha, ha, ha, ha' of distant gulls are the only sounds to be heard, as you give final adjustments to your makeshift tent "
+"Firmly in your bag, well protected by your kit, you sit up for a moment for an invisible audience. -'And you lady ghosts and spiritual gentleman, this your boy is switching off his mind in 9, 8, 7, 6, 5, 4, 3, 2, 2 again"
+"Once in your bag, you bring out your hand to write on it a little haiku just before coming to sleep"
+"'And now Lord, let thy servant depart in peace'"
 
 Section 4 - Hunting/Gathering
-
-
 
 Understand "hunt" as hunting.
 
@@ -417,6 +407,9 @@ A check hunting rule:
 		
 Carry out hunting:
 	let x be a random number between 1 and 10;
+	if the partOfDay is "Night", increase x by 3;
+	if the player is hungry, decrement x;
+	if turn count > Nextsleepy, increment x;
 	if x < the huntPotential of the location of player
 	begin;
 		if the player is holding some rations
@@ -435,7 +428,6 @@ Carry out hunting:
 	let y be a random number between 5 and 10;
 	let z be a random number between 3 and 6;
 	increase the turn count by y * z;
-	[say "[the huntPotential of the location of player][the location of player]"]
 	
 Table of small meats
 prey
@@ -444,6 +436,7 @@ prey
 "mouse"
 "birdie"
 "squirrel"
+"lapwing"
 
 Understand "gather" as gathering.
 
@@ -459,6 +452,9 @@ A check gathering rule:
 		
 Carry out gathering:
 	let x be a random number between 2 and 10;
+	if the partOfDay is "Night", increment x;
+	if the player is hungry, decrement x;
+	if turn count > Nextsleepy, increment x;
 	if x < the gatherPotential of the location of player
 	begin;
 		if the player is holding some rations
@@ -490,15 +486,11 @@ prey
 
 Section 5 - Player Stuff
 
-
-
 A kayak is a kind of vehicle. 
 
 KYK is a kayak.  The KYK is in Starting Location. The player is in KYK. 
 
-
 The player is holding a paddle, some rations, the tarp, the air rifle and the sleeping bag. 
-
 
 Understand "kayak" as KYK. Understand "canoe" as KYK. The printed name of KYK is "your kayak".
 
@@ -519,9 +511,16 @@ The description of the St Andrews cross is "A white diagonal cross on a blue fie
 Instead of pushing a kayak to: 
 	say "The kayak is too heavy to push around for larger distances.".
 
-Before going by kayak to a land, say "You cannot paddle on ground! Find some nice beach to land." instead.
+Before going by kayak to a land:
+	if the player is enclosed by a beach
+	begin;
+		say "Land your kayak first, you cannot paddle on ground!";
+		stop;
+	else;
+		say "You cannot paddle on ground! Find some nice beach to land." instead;
+	end if;
 
-Before going by kayak to a shelter (called x), say "You can not enter [x] in your kayak!" instead.
+Before going by kayak to a shelter (called x), say "You can not enter the [x] in your kayak!" instead.
 
 Before going to home:	
 		say "Hey, Puffin, I know home is a nice place to be, but don[']t quit just now. Remember your mission, you need good People, Mom needs good people, Andrea and Carlos needs good people. And Heather, you don't see her wither and die slowly. I want you to survive Guille, but above all I want you to live before you die." instead.
@@ -532,6 +531,19 @@ Before going by kayak to a room:
 			say "Kayaks work much better with a paddle"; 
 			stop;	
 		end if;
+		
+Check going by kayak from a sea to sea:
+	let x be a random number between 3 and 12;
+	if the player is hungry, decrement x;
+	if the turn count > NextSleepy, decrement x;
+	if partOfDay is "Night", decrease x by 3;
+	if x < weather
+	begin;
+		say "You are not quite sure where you[']ve gone";
+		let y be a random number between 25 and 66;
+		increase turn count by y;
+		stop;
+	end if;	
 	
 After going by kayak from a sea to a sea:
 	let x be a random number between 4 and 6;
@@ -580,7 +592,6 @@ After going from a land to a beach:
 Instead of taking a kayak, say "[printed name] is far too heavy for you to take around.".
 
 Understand "land" as exiting. Understand "land kayak" as exiting.
-
 	
 Before exiting:
 	If the player is in KYK:
@@ -588,16 +599,22 @@ Before exiting:
 			say "Guille, don't play with me, will you? You should not risk your life this far from land. Besides, that would be too sporty.";
 			stop
 	
-Part 3 - The World
+Part 3 - Before game
 
 [ ====================]
 
-Chapter 1 - Before Game
+Chapter 1 - Help
 
 Table of Basic Help Options (continued)
 title    	 description
 "The Status Line"    	 "It[']s important to check your Status Line as it reminds important information. On the left hand you get the name of the location followed by a - and then the number of the day, the part of such day (i.e. morning/night etcetera) and the weather condintion.[NewP]The right hand side should be able unless your character is suffering from some issue. H would indicates that he's hungry and S that he's tired and needs to sleep."
 "Sleep"	"The actor will have to sleep regularly in some shelter. Failure to do so will hinder the actor in various ways. (One of the most obvious being that Guille will be slower at paddling).[NewP]Note that you will not be able to sleep at sea or even below the tide line."
+
+understand "tell me my story" as a mistake ("
+[paragraph break]It was so long ago, laddie... I guess you can[']t even remember it too well when we were all happy together. When we were just you, Andrea, Carlos, ma and me. Ma was a former Spanish Infantry Sergeant turned into a Wilderness Guide. I was more of the Scientist type, doing research on fish and fishy things.Edimbrugh was so full of joy then... Do you remember when we did the Great Glen Way, and I piggied back you the last day?[NewP]In Inverness, you told us all 'I saw Nessie. I [']no['] isn[']t real [']cause it isn[']t science, but I saw it, all mushy. Summers at mom[']s place; that was Mogán, Gran Canaria, sea, sand and sun. And smiles.[NewP]We saw the thing happening there. You called them 'las muertes', just like the locals, 'the deaths', and the name caught on. People got sick and died. Most of them. We got back home then, before they closed the borders. But it had spread everywhere. You got sick too, we all did, but we all survived that. We were very lucky, they said. We only had lost everybody else. But we kept on together. Then it was hunger, crops failed to come, people fighting, wars and it was all over the world. One day TV failed, then the Internet. Remember that? Of course you do. And that day, when the orks, the bad people came and killed Fred, the vegan, just for fun, we run for it; to the Highlands. And many bad things happened to you, to mom, to everybody else, to me, to everybody, but you don[']t want to remember that too much and I respect that. I sort of got killed. But you know that.[NewP]Any way, fast forward, Mom guided you to this island Mahwrpool. That[']s where you live, and you got Heather, your sweet little thing, take good care of her. And you could make it alright, safe from the Orks, most of the time. But the island is too small and you are too few to make it in the long run. So you had this idea, get out in your kayak and *find good people somewhere to the north,*. Sargento Mamá doesn[']t like the idea too much, but I think you are right. Go ahead laddie, live before you die. Just beware not everyone is good. Make sure you the orks don[']t get you.[NewP]
+Oh yes, I could be just a figment of your imagination, but I love you still.").
+
+Chapter 2 - Whe play begins
 
 
 When play begins:
@@ -617,17 +634,23 @@ When play begins:
 		g) Incidentally, paddling at night will be far more hazardous than doing at broad day light.
 		h) The weather. You will enjoy the Highland rain and worse and, at times, it could be a better idea to wait for a storm to pass than try to force the tides.";
 	[Say]
-	say "Hi [bold type]Guille[roman type]. It's me, laddie, [bold type]Fantasmapapá[roman type]. Boy, that[']s a mouthful. Spanish words are long enough and you just had to smash two together. But that's alright. It sounds better than calling me Ghost-dad.[NewP]Even if it fits me well. I am pretty dead. Please don[']t forget that if you don[']t want to get too mad in the head. Anyway, it doesn[']t really matter if I am a real ghost or just a figment of your imagination. I will share this adventure with you. Alright?[NewP]Now, Puffin, if your memory is playing games with you again and you want to remember what you have been through just say [bold type]tell me my story[roman type] and I[']ll tell you what happened, gently.[NewP]";
+	say "Hi Guille. It's me, laddie, Fantasmapapá. Boy, that[']s a mouthful. Spanish words are long enough and you just had to smash two together. But that's alright. It sounds better than calling me Ghost-dad.[NewP]Even if it fits me well. I am pretty dead. Please don[']t forget that if you don[']t want to get too mad in the head. Anyway, it doesn[']t really matter if I am a real ghost or just a figment of your imagination. I will share this adventure with you. Alright?[NewP]Now, Puffin, if your memory is playing games with you again and you want to remember what you have been through just say tell me my story and I[']ll tell you what happened, gently.[NewP]";
 	center "[bold type] -- Press any key to continue --";
 	wait for any key;
 	clear the screen.
 
-understand "tell me my story" as a mistake ("
-[paragraph break]It was so long ago, laddie... I guess you can[']t even remember it too well when we were all happy together. When we were just you, Andrea, Carlos, ma and me. Ma was a former Spanish Infantry Sergeant turned into a Wilderness Guide. I was more of the Scientist type, doing research on fish and fishy things.Edimbrugh was so full of joy then... Do you remember when we did the Great Glen Way, and I piggied back you the last day?[NewP]In Inverness, you told us all 'I saw Nessie. I [']no['] isn[']t real [']cause it isn[']t science, but I saw it, all mushy. Summers at mom[']s place; that was Mogán, Gran Canaria, sea, sand and sun. And smiles.[NewP]We saw the thing happening there. You called them 'las muertes', just like the locals, 'the deaths', and the name caught on. People got sick and died. Most of them. We got back home then, before they closed the borders. But it had spread everywhere. You got sick too, we all did, but we all survived that. We were very lucky, they said. We only had lost everybody else. But we kept on together. Then it was hunger, crops failed to come, people fighting, wars and it was all over the world. One day TV failed, then the Internet. Remember that? Of course you do. And that day, when the orks, the bad people came and killed Fred, the vegan, just for fun, we run for it; to the Highlands. And many bad things happened to you, to mom, to everybody else, to me, to everybody, but you don[']t want to remember that too much and I respect that. I sort of got killed. But you know that.[NewP]Any way, [bold type]fast forward[roman type], Mom guided you to this island Mahwrpool. That[']s where you live, and you got Heather, your sweet little thing, take good care of her. And you could make it alright, safe from the Orks, most of the time. But the island is too small and you are too few to make it in the long run. So you had this idea, get out in your kayak and *[bold type]find good people somewhere to the north,[roman type]*. Sargento Mamá doesn[']t like the idea too much, but I think you are right. Go ahead laddie, live before you die. Just beware not everyone is good. Make sure you the orks don[']t get you.[NewP]
-Oh yes, I could be just a figment of your imagination, but I love you still.").
 
-Chapter 2 - Map
 
+Part 4 - The world
+
+Table of Beaches by Night
+words
+"Well this is surely land of some type, beyond that it's difficult to see."
+"2"
+"3"
+"4"
+"5"
+"6"
 
 Section 1 - Mahwrpool
 
@@ -636,12 +659,11 @@ Starting Location is a beach. "A small tidal loch where goose come to nest which
 South of Starting Location  is a land called Home.
 
 
-
 Section 2 - C
 
 C5, C7, C8, C9, Ca and C11 are seas.
 
-The description of C5 is "To east and south lays the high seas. Coo Island is to west, nearby." 
+The description of C5 is "To the east and south lays the high seas. Coo Island is to west, nearby." 
 
 C6 is a beach. 
 
@@ -656,7 +678,7 @@ The description of C8 is "High seas to the south, the cliffs of Forbidden Island
 
 Ca is west of c9. c9 is west of c8. c8 is west of c7. c7 is west of c6. c6 is west of c5.
 
-The description of C9 is "The sea extends into the vast Atlantic to the south, to the north you still meet Forbidden Island[']s cliffs which extends into the west."
+The description of C9 is "The sea goes into the vast Atlantic to the south, to the north you still meet Forbidden Island[']s cliffs which extends into the west."
 
 The description of Ca is "[LandNorth]"
 
@@ -676,13 +698,30 @@ The description of D4 is "[NoLand]"
 
 The description of D5 is "[NoLand]"
 
-The description of D6 is "Coo Island, a skerrie is to the south, far to the west or maybe north, lies what looks like could be land, or a low lying cloud." 
+To say D6description:
+	if partOfDay is "Night"
+	begin;
+		choose a random row in the Table of Vision;
+		say "[words entry]";
+	else;
+		say "Coo Island, a skerrie is to the south, far to the west or maybe north, lies what looks like could be land, or a low lying cloud.";
+	end if;
+
+The description of D6 is "[D6description]". 
 
 The description of D7 is "To the South the sea lies open. To the west the cliffs of a large island. To the north you can see a skerrie surrounded by treacherous reefs."
 
 D8 and D9 are lands. 
 
-The description of D8 is "A promontory over the cliffs,  where your hungry eyes are quick to spot the trail of a rabbit. More interestingly, perhaps, is a black stone hut with a small hut that you call a _bothy_. You might, want to go in and take a look". The printed name of D8 is "Promontory".
+To say D8description:
+	if partOfDay is "Night"
+	begin;
+		say "A relatively flat area. The sea sound here strongly enough to move much for the risk of falling from a cliff.";
+	else;
+		say "A promontory over the cliffs,  where your hungry eyes are quick to spot the trail of a rabbit. More interestingly, perhaps, is a black stone hut with a small hut that you call a _bothy_. You might, want to go in and take a look.";
+	end if;
+
+The description of D8 is "[D8description]". The printed name of D8 is "Promontory".
 
 The BothyExterior is in D8. The printed name of BothyExterior is "Black Bothy". The BothyExterior is a backdrop. Understand "Bothy" and "Black Bothy" as BothyExterior.
 
@@ -690,19 +729,60 @@ The Black Bothy is a shelter. The Black Bothy is inside of D8.  The description 
 
 The paper is here. The description of the paper is "[line break]The paper begins with 'Formation of LISA Black Hole Binaries in Merging Dwarf Galaxies: The Imprint of Dark Matter' and follows with a lot of words you have no hope to understand." 
 
-The description of D9 is "Your legs sink in the soft ground, though you still manage to make some way. This bit of land is devoid of shelter or anything really but grass, __whatever___ and heather.[NewP]To the west and south the cliffs impedes your way. To the north you can see what could be the ruins of house, your way ends to the east in a promontory." The printed name of D9 is "A barren land".
+To say D9description:
+	if partOfDay is "Night"
+	begin;
+		say "Sinking in the soft ground you struggle to go anywhere. If only because of fear of giving a bad step.";
+	else;
+		say "Your legs sink in the soft ground, though you still manage to make some way. This bit of land is devoid of shelter or anything really but grass, __whatever___ and heather.[NewP]To the west and south the cliffs impedes your way. To the north you can see what could be the ruins of house, your way ends to the east in a promontory." ;
+	end if;
+	
+Instead of going west from D9:
+	if partOfDay is "Night"
+	begin;
+		center "You fall down the cliff, hitting your head in a rock, ending your story suddenly.";
+		end the story finally;
+	else;
+ 		say "I would not go down that cliff if I were you, Guille.";
+	end if;
+
+The description of D9 is "[D9description]". The printed name of D9 is "A barren land".
 
 D2 and Da are beaches.
 
 Instead of going east from Da, say "This is quite of a dangerous climb. It would be simply easier and safer to take another router."
 
-Instead of going west from D9, say "I would not go down that cliff if I were you, Guille."
+To say D2description:
+	if partOfDay is "Night"
+	begin;
+		choose a random row in the Table of Beaches by Night;
+		say "[words entry]";
+	else;
+		say "A small island, little more than a cove and, going up, a hill that, for some reason makes you remember the face of your last teacher.[NewP]To the south the sea is wild, reefs shield this island to the north and east. To the west, as you know, is the strecth of sea whence you came.";
+	end if;
 
-The printed name of D2 is "Teacher[']s Cove". The description of D2 is "A small island, little more than a cove and, going up, a hill that, for some reason makes you remember the face of your last teacher.[NewP]To the south the sea is wild, reefs shield this island to the north and east. To the west, as you know, is the strecth of sea whence you came."
+The printed name of D2 is "Teacher[']s Cove". The description of D2 is "D2description".
+
+To say D2Udescription:
+	if partOfDay is "Night"
+	begin;
+		say "It takes you a fall and some bruises to reach what you believe is the top of this hill. It is so dark now.";
+	else;
+		say "The hill ends is a small depression at its top. There the rain provides enough water for a large pool that the guillemots have taken as its own.";
+	end if;
  
-D2U is a land. The printed name of D2U is "Teacher[']s Hill". The description of D2U is "The hill ends is a small depression at its top. There the rain provides enough water for a large pool that the guillemots have taken as its own." D2U is up of D2.
+D2U is a land. The printed name of D2U is "Teacher[']s Hill". The description of D2U is "[D2Udescription]". D2U is up of D2.
 
-The printed name of Da is "Wooden Sign Beach". The description of Da is  "A nice wide beach that ends abruptly in a forebading cliff to the east. The sea extends to the west, but those are a confirmed ork area, so you will not venture any further west. To the south, the strech of sea whence you came, to the north a marshy slope like it could only exist in Scotland."
+To say DaDescription:
+	if partOfDay is "Night"
+	begin;
+		choose a random row in the Table of Beaches by Night;
+		say "[words entry]";
+	else;
+		say "A nice wide beach that ends abruptly in a forebading cliff to the east. The sea extends to the west, but those are a confirmed ork area, so you will not venture any further in that direction. To the south, the strech of sea whence you came, to the north a marshy slope like it could only exist in Scotland.";
+	end if;
+
+The printed name of Da is "Wooden Sign Beach". The description of Da is "[DaDescription]"
 
 The wooden sign is here. The wooden sign is a backdrop. The description of the wooden sign  is "'James Webb Beach'".
 
@@ -712,10 +792,7 @@ Section 4 - E Column
 
 E1, E2, E3, E4, E5 and E6 are seas.
 
-
-
-
-The description of E1 is "Nothing on sight, to the east the waves grow really rapidly."
+The description of E1 is "[NoLand]"
 
 The description of E2 is "[NoLand]"
 
@@ -725,23 +802,57 @@ The description of E4 is "[NoLand]"
 
 The description of E5 is "[NoLand]"
 
-The description of E6 is "A crowd of gannets soar the skies in circles to the west; any other direction is empty."
+The description of E6 is "[LandWest]"
 
 E7 and E8 are beaches.
 
+To say E7description:
+	if partOfDay is "Night"
+	begin;
+		choose a random row in the Table of Beaches by Night;
+		say "[words entry]";
+	else;
+		say "A small island, little more than a cove and, going up, a hill that, for some reason makes you remember the face of your last teacher.[NewP]To the south the sea is wild, reefs shield this island to the north and east. To the west, as you know, is the strecth of sea whence you came.";
+	end if;
+
 The description of E7 is "A rocky skerry emerging but inches from the waters.". The printed name of E7 is "Pointy sticks island".
 
-The description of E8 is "A corridor of sand, bordered by cliffs serpents its way from east to north." The printed name of E8 is "Gold carpet beach".
+To say E8description:
+	if partOfDay is "Night"
+	begin;
+		choose a random row in the Table of Beaches by Night;
+		say "[words entry]";
+	else;
+		say "A corridor of sand, bordered by cliffs serpents its way from east to north.";
+	end if;
+
+The printed name of E8 is "Gold carpet beach". The description of E8 is "[E8description]".
 
 E9 and Ea are lands.
 
-The printed name of E9 is "Ruined Croft". The description of E9 is "This used to be, not too long ago, a working farm of modest means, probably occupied by other 'muertes' survivors. Now, all that remains is a few charred walls, black but where the moss has begun to grow and a heap of bones. [NewP]There[']s a cliff to the east, a massive wooden hill to the north, everything else is marshland."
+To say E9description:
+	if partOfDay is "Night"
+	begin;
+		say "It is hard to see at this late hour, but by its disposition, there seems to be the ruins of some building; just four walls or something.";
+	else;
+		say "This used to be, not too long ago, a working farm of modest means, probably occupied by other 'muertes' survivors. Now, all that remains is a few charred walls, black but where the moss has begun to grow and a heap of bones. [NewP]There[']s a cliff to the east, a massive wooden hill to the north, everything else is marshland.";
+	end if;
+
+The printed name of E9 is "Ruined Croft". The description of E9 is "[E9description]"
 
 The bones is a backdrop. The bones are in E9. The description of the bones is "human bones of mixed sizes, you shiver with the mental picture of their fate at the hands of 'orks'."
 
 The walls is a backdrop. The walls are in E9. 
 
-The printed name of Ea is "Blanket Bog". The description of Ea is "A kind of land not unfamiliar to you: a patchwork of poodles, thin cold streams, moss, ferns and heather.[NewP]A beach and the sea are to south. To the north your way to the sea is blocked by bushes so thick and tick infested it isn't worth a cross. To the east you can see the remains of a modern home." 
+To say EaDescription:
+	if partOfDay is "Night"
+	begin;
+		say "Your leg foot in the mud, your right foot on rock, it's hard to see if you are going anywhere, or at all.";
+	else;
+		say "A kind of land not unfamiliar to you: a patchwork of poodles, thin cold streams, moss, ferns and heather.[NewP]A beach and the sea are to south. To the north your way to the sea is blocked by bushes so thick and tick infested it isn't worth a cross. To the east you can see the remains of a modern home.";
+	end if;
+
+The printed name of Ea is "Blanket Bog". The description of Ea is "[EaDescription]" 
 
 Ea is west of E9. E9 is west of E8. E8 is west of E7. E7 is west of E6. E6 is west of E5. E5 is west of E4. E4 is west of E3. E3 is west of E2. E2 is west of E1.
 
@@ -797,7 +908,7 @@ The description of G6 is "[LandNorth]"
 
 The description of G7 is "[NoLand]"
 
-The description of G8 is "Land to the south."
+The description of G8 is "[LandSouth]"
 
 The description of G9 is "To the south a mountain climbs out of the sea, to the north a smallish land."
 
@@ -823,9 +934,9 @@ H5, H7, H8 and Ha are seas.
 
 The description of H5 is "An island to the west, a beach to the east."
 
-The description of H7 is "Land to the east, broken and uneven."
+The description of H7 is "[LandEast]"
 
-The description of H8 is "To the south something that doesn[']t seem much larger than a skerry emerges from the waves."
+The description of H8 is "[LandWest]"
 
 The description of Ha is "Land to the east, to the west a place filled with terror."
 
@@ -839,7 +950,8 @@ The printed name of H6 is "Cupcake skerry". The description of H6 is "You have n
 
 H6U is up of H6. H6U is a shelter. H6U is up of H6. The printed name of H6U is "Cave". The description of H6U is "Not a huge thing, just six meters into the rock, this cave might have been the refuge of some pirate long ago."
 
-The printed name of H9 is "The tween beans". The description of H9 is "An oddly shaped that an eight years old kid might have described as 'two beans with a lake in the middle'. Up from one of such beans there are the ruins of a small hut."
+The printed name of H9 is "The tween beans". The description of H9 is "An oddly shaped island up
+that an eight years old kid might have described as 'two beans with a lake in the middle'. Up from one of such beans there are the ruins of a small hut."
 
 H9U is a land. H9U is up of H9. The printed name of H9U is "Hut in ruins". The description of H9U is "Long, very long ago, somebody built himself some sort of stony shelter. It is all in ruins now, nothing but red bricks and a broken teapot, but it seems safe from sea and wind."
 
@@ -914,7 +1026,7 @@ The description of J4 is "[NoLand]."
 
 The description of J5 is "[NoLand]."
 
-The description of J6 is "[LandEast]."
+The description of J6 is "[LandNorth]."
 
 The description of J7 is "[NoLand]."
 
@@ -924,9 +1036,13 @@ J9 is a beach. [skerry]
 
 The printed name of J9 is "Lighthouse Island". The description of J9 is "A round, flatish skerry that you wouldn[']t even spotted if not where by the lighthouse on its center.".
 
-The Lighthouse is a shelter. The lighthouse is up of J9. The description of the Lighthouse is "A small tower that housed a modern signalling station. Obviously sacked long ago, it is now empty and devoid of facilities. Still, inside is protected from wind and rain and there[']s barely enough space for you lie on."
+The Lighthouse is a shelter. The lighthouse is up of J9. The description of the Lighthouse is "A small tower that housed a modern signalling station. Obviously sacked long ago, it is now empty and devoid of any facilities. Still, inside is protected from wind and rain and there[']s barely enough space for you lie on."
 
 Ja is a land. The printed name of Ja is "Good People". The description of Ja is "NOT IMPLEMENT BUT PLAYER WINS HERE UNLESS STARTS SHOOTING AROUND STUPID OR SOMETHING".
+
+After going to Ja: 
+	center "You have found good people yay you!";
+	end the story finally.
 
 Ja is west of J9. J9 is west of J8. J8 is west of J7.           J7 is west of J6. J6 is west of J5. J5 is west of J4. J4 is  west of J3. J3 is west of J2. J2 is west of J1. 
 
@@ -1052,7 +1168,21 @@ Section 14 - Regions
 
 BorderSea is a region. C5, C7, C8, C9, CA, D1, D2, D3, D4, E1, F1, G1, GA, HA, I1, IA, J1, J2, K3, L3 and M3 are in BorderSea.
 
-Instead of going nowhere from BorderSea, say "Be careful, that way is the high seas".
+Instead of going nowhere from BorderSea:
+	say "Do not go there, Puffin, those are High seas".
+	
+Instead of going up in BorderSea:
+	say "Guille, kayaks don[']t fly very well."
+	
+Instead of going down in a BorderSea:
+	say "Guille, going down at sea? Do you _really_ want to do that?"
+	
+Instead of going up in a Sea:
+	say "Guille, kayaks don[']t fly very well."
+	
+Instead of going down in a Sea:
+	say "Guille, going down at sea? Do you _really_ want to do that?"
+	
 
 
 
