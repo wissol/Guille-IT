@@ -62,12 +62,12 @@ words
 To say Tab:
 	say "    ".
 	
-Understand "status" as a mistake("Day [Day] - [PartOfDay] - [Weather] [line break][Tab][if player is hungry]Hungry[otherwise]Satiated[end if] [line break][Tab][if turn count > Nextsleepy]Sleepy[otherwise]Fresh[end if]").
-
 NSEW is a text variable.	
 
 To say LandNorth:
-	let x be a random number between 2 and 6;
+	let x be a random number between 2 and 8;
+	if partOfDay is "Night", decrement x;
+	if turn count > Nextsleepy, decrement x;
 	if weather > x		
 	begin;
 		choose a random row in the Table of Vision;
@@ -78,7 +78,9 @@ To say LandNorth:
 	say "[words entry]";
 	
 To say LandSouth:
-	let x be a random number between 2 and 6;
+	let x be a random number between 2 and 8;
+	if partOfDay is "Night", decrement x;
+	if turn count > Nextsleepy, decrement x;
 	if weather > x		
 	begin;
 		choose a random row in the Table of Vision;
@@ -89,7 +91,9 @@ To say LandSouth:
 	say "[words entry]";
 		
 To say LandEast:
-	let x be a random number between 2 and 6;
+	let x be a random number between 2 and 8;
+	if partOfDay is "Night", decrement x;
+	if turn count > Nextsleepy, decrement x;
 	if weather > x		
 	begin;
 		choose a random row in the Table of Vision;
@@ -100,7 +104,9 @@ To say LandEast:
 	say "[words entry]";
 		
 To say LandWest:
-	let x be a random number between 2 and 6;
+	let x be a random number between 2 and 8;
+	if partOfDay is "Night", decrement x;
+	if turn count > Nextsleepy, decrement x;
 	if weather > x		
 	begin;
 		choose a random row in the Table of Vision;
@@ -661,13 +667,13 @@ South of Starting Location  is a land called Home.
 
 Section 2 - C
 
-C5, C7, C8, C9, Ca and C11 are seas.
+C5, C7, C8, C9, and Ca are seas.
 
 The description of C5 is "To the east and south lays the high seas. Coo Island is to west, nearby." 
 
 C6 is a beach. 
 
-The printed name of C6 is "Coo Island". The description of C6 is "Carlos, your older brother, imagines this island resembles a cow,  kinda. A skerry that you know quite well, with a diminute beach but enough for a kayak, but you wouldn[']t risk spending a night here. [NewP]Goose Poo beach lies to the south. Further to the west, over the skerrie own cliffs, you see the distant cliffs of Forbidden Island. (Forbidden by your mother, that is for Orks might lurk there). To the north, somewhere, you hope to find good people."
+The printed name of C6 is "Coo Island". The description of C6 is "Carlos, your older brother, imagines this island resembles a cow,  kinda. A skerry that you know quite well, with a diminute beach but enough for a kayak, but you wouldn[']t risk spending a night here. [NewP]Goose Poo beach lies to the south. Further to the west, over the skerrie own cliffs, you see the distant cliffs of Forbidden Island. (Forbidden by your mother, that is, for Orks might lurk there). To the north, somewhere, you hope to find good people."
 	
 The description of C7 is "[LandEast]" 
 
@@ -684,7 +690,7 @@ The description of Ca is "[LandNorth]"
 
 Section 3 - D Column
 
-D1, D3, D4, D5, D6, D7  and D11 are seas.
+D1, D3, D4, D5, D6, and D7 are seas.
 
 The description of D1 is "A skerry is to the west, sheltering this area from the winds that blow stronger to the east and south. To the north, nothing on sight."
 
@@ -812,10 +818,10 @@ To say E7description:
 		choose a random row in the Table of Beaches by Night;
 		say "[words entry]";
 	else;
-		say "A small island, little more than a cove and, going up, a hill that, for some reason makes you remember the face of your last teacher.[NewP]To the south the sea is wild, reefs shield this island to the north and east. To the west, as you know, is the strecth of sea whence you came.";
+		say "A rocky skerry emerging but inches from the waters.";
 	end if;
 
-The description of E7 is "A rocky skerry emerging but inches from the waters.". The printed name of E7 is "Pointy sticks island".
+The description of E7 is "[E7description]". The printed name of E7 is "Pointy sticks island".
 
 To say E8description:
 	if partOfDay is "Night"
@@ -860,8 +866,6 @@ Section 5 - F Column
 
 F1, F2, F3, F4, F5, F6 and F7 are seas.
 
-
-
 The description of F1 is "[NoLand]"
 
 The description of F2 is "[LandNorth]"
@@ -874,7 +878,7 @@ To say hintF3:
 		say "engulfed by the furious rain";
 	end if.
 
-The description of F3 is "To the north you spot a tall, rugged cliff  [hintF3]".
+The description of F3 is "To the north you spot a tall, rugged cliff [hintF3]".
 
 The description of F4 is "[LandNorth]"
 
@@ -882,17 +886,53 @@ The description of F5 is "[NoLand]"
 
 The description of F6 is "[NoLand]"
 
-The description of F7 is "A skerrie lies to the south, if you can brave its reefs, to the west lies what looks like a more substantial island."
+To say F7description:
+	let x be a random number between 2 and 8;
+	if partOfDay is "Night", decrement x;
+	if turn count > Nextsleepy, decrement x;
+	if weather > x		
+	begin;
+		choose a random row in the Table of Vision;
+		say "[words entry]";
+	else;
+		say "A skerrie lies to the south, if you can brave its reefs, to the west lies what looks like a more substantial island.";
+	end if;
+	
+The description of F7 is "F7description"
+
+To say FaDescription:
+	if partOfDay is "Night"
+	begin;
+		say "If the moon would shine more brightly you could see much better. At this time, you have only a vague idea of being in some sandy beach.";
+	else;
+		say "A wide beach of white sand broken by a narrow stream coming from the wooden hill to the east. To the south lies a marsh area separated by thick busches, a probably infested with ticks.";
+	end if;
 
 Fa is a beach.
 
-The printed name of Fa is "Otabae Beach". The description of Fa is "A wide beach of white sand broken by a narrow stream coming from the wooden hill to the east. To the south lies a marsh area separated by thick busches, a probably infested with ticks."
+The printed name of Fa is "Otabae Beach". The description of Fa is "[FaDescription]"
 
 F8 and F9 are lands.
 
-The printed name of F8 is "Hedgehog plains".The description of F8 is "Even in the dullest of places, as this moor is, there's excitment for those who know how to look. Like a nice hedgehog borrow over there.[NewP]Sea is to the north and east, to the south a beach, to the west a wooded hill.".
+To say F8description:
+	if partOfDay is "Night"
+	begin;
+		say "This is just a muddy wasteland, crossed by chilly winds, and the darkness of the night.";
+	else;
+		say "Even in the dullest of places, as this moor is, there's excitment for those who know how to look. Like a nice hedgehog borrow over there.[NewP]Sea is to the north and east, to the south a beach, to the west a wooded hill.";
+	end if;
 
-The printed name of F9 is "Wooded hill". The description of F9 is "Steep to the north, where this mountain falls suddenly into the sea, this birch forest slopes down softly everywhere else."
+The printed name of F8 is "Hedgehog plains".The description of F8 is "[F8description]".
+
+To say F9description:
+	if partOfDay is "Night"
+	begin;
+		say "Bang!, you just hit your head with a tree. Great, guess where you are. Oh, yes, a forest. This must be the only forest in the islands, and all for you, in the middle of the night. Just your luck, really.";
+	else;
+		say "Steep to the north, where this mountain falls suddenly into the sea, this birch forest slopes down softly everywhere else.";
+	end if;
+
+The printed name of F9 is "Wooded hill". The description of F9 is "[F9description]"
 
 Fa is west of F9. F9 is west of F8. F8 is west of F7. F7 is west of F6. F6 is west of F5. F5 is west of F4. F4 is west of F3. F3 is west of F2. F2 is west of F1.
 
@@ -900,7 +940,19 @@ Section 6 - G Column
 
 G1, G5, G6, G7, G8, G9 and Ga are seas.
 
-The description of G1 is "An island to the north and west."
+To say G1description:
+	let x be a random number between 2 and 8;
+	if partOfDay is "Night", decrement x;
+	if turn count > Nextsleepy, decrement x;
+	if weather > x		
+	begin;
+		choose a random row in the Table of Vision;
+		say "[words entry]";
+	else;
+		say "An island to the north and west.";
+	end if;
+
+The description of G1 is "[G1description]"
 
 The description of G5 is "[LandEast]"
 
@@ -910,14 +962,36 @@ The description of G7 is "[NoLand]"
 
 The description of G8 is "[LandSouth]"
 
-The description of G9 is "To the south a mountain climbs out of the sea, to the north a smallish land."
+To say G9description:
+	let x be a random number between 2 and 8;
+	if partOfDay is "Night", decrement x;
+	if turn count > Nextsleepy, decrement x;
+	if weather > x		
+	begin;
+		choose a random row in the Table of Vision;
+		say "[words entry]";
+	else;
+		say "To the south a mountain climbs out of the sea, to the north a smallish land.";
+	end if;
 
-The description of Ga is "To the south you spot the white sands of a promising beach. To the west, you won[']t go any further, as the playground of orks lie over there."
+The description of G9 is "[G9description]"
+
+The description of Ga is "[LandSouth]"
 
 G2, G3 and G4 are lands.
 
 To say orks:
 	say "orks not implemented."
+	
+After going to G2:
+	if partOfDay is "Night"
+	begin;
+		say "uff";
+		continue the action;
+	else;
+		say "Uncovered by the light of the sun, the orks find you and quickly surround you, forcing you to surrender. Welcome to your short life as a slave.";
+		end the story finally;
+	end if;
 
 The printed name of G2 is "Stone Circle". The description of G2 is "A soft hill leads to to a circle of six heaps of stones, with a smaller one at the center.[NewP]To the north lies cultivated land, to the west, [orks]."
 
@@ -932,13 +1006,25 @@ Section 7 - H Column
 
 H5, H7, H8 and Ha are seas.
 
-The description of H5 is "An island to the west, a beach to the east."
+To say H5description:
+	let x be a random number between 2 and 8;
+	if partOfDay is "Night", decrement x;
+	if turn count > Nextsleepy, decrement x;
+	if weather > x		
+	begin;
+		choose a random row in the Table of Vision;
+		say "[words entry]";
+	else;
+		say "An island to the west, a beach to the east.";
+	end if;
+
+The description of H5 is "[H5description]"
 
 The description of H7 is "[LandEast]"
 
 The description of H8 is "[LandWest]"
 
-The description of Ha is "Land to the east, to the west a place filled with terror."
+The description of Ha is "[LandEast]"
 
 H1, H4, H6 and H9 are beaches.
 
@@ -967,42 +1053,69 @@ Section 8 - I Column
 
 I1, I4, I5, I6, I7, I8, I9 and Ia are seas.
 
-The description of I1 is "Land to the south and west, to the east the sea extends with no end in sight."
-
-The description of I4 is "Land to the south and east."
-
-The description of I5 is "[NoLand]."
-
-To say I6text:
-	if weather > 2
+To say I1description:
+	let x be a random number between 2 and 8;
+	if partOfDay is "Night", decrement x;
+	if turn count > Nextsleepy, decrement x;
+	if weather > x		
 	begin;
-		say "The rain and the fog does not let you see anything beyond the closest waves.";
+		choose a random row in the Table of Vision;
+		say "[words entry]";
 	else;
-		say "There is land to the south, everything else is sea.";
+		say "Land to the south and west, to the east the sea extends with no end in sight.";
 	end if;
 
-The description of I6 is "[I6text]."
+The description of I1 is "[I1description]"
 
-The description of I7 is "[NoLand]."
+To say I4description:
+	let x be a random number between 2 and 8;
+	if partOfDay is "Night", decrement x;
+	if turn count > Nextsleepy, decrement x;
+	if weather > x		
+	begin;
+		choose a random row in the Table of Vision;
+		say "[words entry]";
+	else;
+		say "Land to the south and east.";
+	end if;
 
-The description of I8 is "[NoLand]."
+The description of I4 is "[I4description]"
+
+The description of I5 is "[NoLand]"
+
+The description of I6 is "[LandSouth]"
+
+The description of I7 is "[NoLand]"
+
+The description of I8 is "[NoLand]"
 
 To say I9text:
-	if weather > 2
+	let x be a random number between 2 and 8;
+	if partOfDay is "Night", decrement x;
+	if turn count > Nextsleepy, decrement x;
+	if weather > x		
 	begin;
-		say "The rain and the fog does not let you see anything beyond the closest waves.";
+		choose a random row in the Table of Vision;
+		say "[words entry]";
 	else;
 		say "To the south and north the waves are interrupted by islands.";
 	end if;
 	
-The description of Ia is "An island lies to the north, defended by tall cliffs, to the west there[']s nothing but the kingdom of the orcs."
-
-
-The description of I9 is "[I9text]."
+The description of I9 is "[I9text]"
+	
+The description of Ia is "[LandNorth]"
 
 I2 is a land.
 
-The printed name of I2 is "Northern Promontory". The description of I2 is "This area raises from the sea to become a flat plateu."
+To say I2description:
+	if partOfDay is "Night"
+	begin;
+		say "This area raises from the sea to become a flat plateu. There is little else you can see at this hour.";
+	else;
+		say "This area raises from the sea to become a flat plateu.";
+	end if;
+
+The printed name of I2 is "Northern Promontory". The description of I2 is "[I2description]"
 
 I3 is a beach.
 
@@ -1034,9 +1147,19 @@ The description of J8 is "[LandWest]."
 
 J9 is a beach. [skerry] 
 
-The printed name of J9 is "Lighthouse Island". The description of J9 is "A round, flatish skerry that you wouldn[']t even spotted if not where by the lighthouse on its center.".
+To say J9description:
+	if partOfDay is "Night"
+	begin;
+		say "A small island that you can barely spot thanks to the tall lighthouse built on it. Of course, there is no light.";
+	else;
+		say "A round, flatish skerry that you wouldn[']t have even care to approach if not where by the lighthouse on its center.";
+	end if;
 
-The Lighthouse is a shelter. The lighthouse is up of J9. The description of the Lighthouse is "A small tower that housed a modern signalling station. Obviously sacked long ago, it is now empty and devoid of any facilities. Still, inside is protected from wind and rain and there[']s barely enough space for you lie on."
+The printed name of J9 is "Lighthouse Island". The description of J9 is "[J9description]".
+
+The LHExterior is in J9. The LHExterior is a backdrop. The description of the LHExterior is "A tall narrow tower, painted in red and white."
+
+The Lighthouse is a shelter. The lighthouse is up of J9. The description of the Lighthouse is "A tall narrow tower that housed a modern signalling station. Obviously sacked long ago, it is now empty and devoid of any facilities. Still, inside is protected from wind and rain and there[']s barely enough space for you lie on."
 
 Ja is a land. The printed name of Ja is "Good People". The description of Ja is "NOT IMPLEMENT BUT PLAYER WINS HERE UNLESS STARTS SHOOTING AROUND STUPID OR SOMETHING".
 
@@ -1064,10 +1187,25 @@ The description of K9 is "A gulf by the looks. Shadows hint of land to the west,
 
 K6 is a beach.
 
-The printed name of K6 is "Red Beach". The description of K6 is "Mixed with red sand there's a derelict boat, now reddened by oxide. A marsh lies to the north."
+To say K6description:
+	if partOfDay is "Night"
+	begin;
+		say "This is a beach of the sandy kind, but other than that, there is nothing you can figure out under this light";
+	else;
+		say "Mixed with red sand there's a derelict boat, now reddened by oxide. A marsh lies to the north.";
+	end if;
 
-The derelict boat is a backdrop. The description of the derelict boat is "A fishing boat, with a cabin and engine in a hopeless state of ruin."
+The printed name of K6 is "Red Beach". The description of K6 is "[K6description]"
 
+To say DBdescription:
+	if partOfDay is "Night"
+	begin;
+		say "You do not seem to be able to find that.";
+	else;
+		say "A crumbling fishing boat, with a cabin and engine in a hopeless state of ruin. Unsafe even to enter.";
+	end if;
+
+The derelict boat is a backdrop. The derelict boat is in K6. The description of the derelict boat is "[DBdescription]"
 
 Ka is a land.
 
